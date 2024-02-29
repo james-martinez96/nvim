@@ -20,6 +20,11 @@ return {
         "^node_modules/"
       }
     },
+   -- extensions = {
+   --   ['ui-select'] = {
+   --     require('telescope.themes').get_dropdown()
+   --   }
+   -- }
   },
   config = function()
     pcall(require('telescope').load_extension, 'fzf')

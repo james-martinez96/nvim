@@ -1,6 +1,8 @@
 -- Set completeopt to have a better completion experience
 vim.opt.completeopt = 'menuone,noselect'
 
+vim.opt.clipboard = 'unnamedplus'
+
 --Set smarttab
 vim.opt.smarttab = true
 
