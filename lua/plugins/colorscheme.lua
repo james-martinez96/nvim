@@ -34,8 +34,15 @@ return {
 --  end,
   'folke/tokyonight.nvim',
   lazy = false,
+  -- opts = {
+  --   transparent = true,
+  -- },
   config = function()
+    require("tokyonight").setup({
+      transparent = true,
+    })
     vim.cmd.colorscheme 'tokyonight-night'
     vim.cmd.hi 'Comment gui=none'
+
   end
 }

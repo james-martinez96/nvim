@@ -40,7 +40,7 @@ return {
         },
       })
 
-      vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
+      vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, { desc = 'Format File'})
     end,
   },
 
@@ -50,6 +50,7 @@ return {
       "hrsh7th/nvim-cmp",
       "hrsh7th/cmp-nvim-lsp",
       "saadparwaiz1/cmp_luasnip",
+      "rafamadriz/friendly-snippets",
       "L3MON4D3/LuaSnip",
       {
         "pmizio/typescript-tools.nvim",
