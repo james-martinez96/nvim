@@ -6,6 +6,9 @@ vim.opt.clipboard = 'unnamedplus'
 --Set smarttab
 vim.opt.smarttab = true
 
+--Set expandtab
+vim.opt.expandtab = true
+
 --Set tabstop
 vim.opt.tabstop = 8
 

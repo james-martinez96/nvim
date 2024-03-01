@@ -22,7 +22,14 @@ return {
     opts = {
       ensure_installed = {
         "lua_ls",
-        "tsserver",
+        --[["tsserver",]]
+        "cssls",
+        "tailwindcss",
+        "html",
+        "jedi_language_server",
+        "vimls",
+        "clangd",
+        "arduino_language_server",
       },
     },
   },
@@ -40,15 +47,18 @@ return {
         },
       })
 
-      vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, { desc = 'Format File'})
+      vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, { desc = "Format File" })
     end,
   },
 
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "hrsh7th/nvim-cmp",
       "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/nvim-cmp",
       "saadparwaiz1/cmp_luasnip",
       "rafamadriz/friendly-snippets",
       "L3MON4D3/LuaSnip",
@@ -264,6 +274,7 @@ return {
           { name = "nvim_lua" },
           { name = "nvim_lsp" },
           { name = "luasnip" },
+          { name = "buffer" },
         },
       })
     end,
