@@ -4,6 +4,8 @@ return {
   { "numToStr/Comment.nvim", opts = {} },
   { "folke/which-key.nvim", opts = {} },
   { "mbbill/undotree" },
+  { "tpope/vim-fugitive" },
+  { "tpope/vim-surround" },
   {
     -- Add indentation guides even on blank lines
     "lukas-reineke/indent-blankline.nvim",

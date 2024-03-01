@@ -19,19 +19,19 @@ return {
 
   {
     "williamboman/mason-lspconfig.nvim",
-    opts = {
-      ensure_installed = {
-        "lua_ls",
-        --[["tsserver",]]
-        "cssls",
-        "tailwindcss",
-        "html",
-        "jedi_language_server",
-        "vimls",
-        "clangd",
-        "arduino_language_server",
-      },
-    },
+    -- opts = {
+    --   ensure_installed = {
+    --     "lua_ls",
+    --     --[["tsserver",]]
+    --     "cssls",
+    --     "tailwindcss",
+    --     "html",
+    --     "jedi_language_server",
+    --     "vimls",
+    --     "clangd",
+    --     "arduino_language_server",
+    --   },
+    -- },
   },
 
   {
@@ -133,25 +133,60 @@ return {
       -- ]]
       -- Enable the following language servers
       -- they are using default settings
-      local servers = { --[['sumneko_lua',]]
-        "clangd",
-        "rust_analyzer", --[['pyright',]]
-        "jedi_language_server", --[['tsserver',]]
+      local servers = {
+        --[['sumneko_lua',]]
+        clangd = {},
+        rust_analyzer = {},
+        --[['pyright',]]
+        jedi_language_server = {},
+        --[['tsserver',]]
         --[['eslint',]]
-        "tailwindcss",
-        "cssls",
-        "cssmodules_ls",
-        "vimls",
-        "texlab",
-        "asm_lsp",
-        "arduino_language_server",
+        tailwindcss = {},
+        cssls = {},
+        cssmodules_ls = {},
+        vimls = {},
+        texlab = {},
+        asm_lsp = {},
+        arduino_language_server = {},
+        html = {
+          filetypes = { "html", "javascriptreact", "typscriptreact" },
+        },
+        lua_ls = {
+          Lua = {
+            workspace = { checkThirdParty = false },
+            telemetry = { enable = false },
+          },
+          settings = {
+            completion = {
+              callSnippet = "Replace",
+            },
+          },
+        },
       }
-      for _, lsp in ipairs(servers) do
-        lspconfig[lsp].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end
+
+      local mason_lspconfig = require("mason-lspconfig")
+      mason_lspconfig.setup({
+        ensure_installed = vim.tbl_keys(servers),
+      })
+      mason_lspconfig.setup_handlers({
+        function(server_name)
+          require("lspconfig")[server_name].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+            settings = servers[server_name],
+            filetypes = (servers[server_name] or {}).filetypes,
+          })
+        end,
+      })
+
+      -- for _, lsp in ipairs(servers) do
+      --   lspconfig[lsp].setup({
+      --     on_attach = on_attach,
+      --     capabilities = capabilities,
+      --   })
+      -- end
+
+      require("neodev").setup({})
 
       require("typescript-tools").setup({
         on_attach = on_attach,
@@ -199,23 +234,6 @@ return {
             filetypes = { "javascriptreact", "typescriptreact" },
           },
         },
-      })
-
-      require("neodev").setup({})
-      lspconfig.lua_ls.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        settings = {
-          completion = {
-            callSnippet = "Replace",
-          },
-        },
-      })
-
-      lspconfig.html.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        filetypes = { "html", "javascriptreact", "typscriptreact" },
       })
 
       -- COMPLETION

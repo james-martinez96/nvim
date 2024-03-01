@@ -55,6 +55,13 @@ return {
       require("telescope.builtin").current_buffer_fuzzy_find,
       { desc = "[S]earch [B]uffer" }
     )
+    vim.keymap.set('n', '<leader>/', function()
+      -- You can pass additional configuration to telescope to change theme, layout, etc.
+      require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+        winblend = 10,
+        previewer = false,
+      })
+    end, { desc = '[/] Fuzzily search in current buffer' })
     vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
     vim.keymap.set("n", "<leader>st", require("telescope.builtin").tags, { desc = "[S]earch [T]ags" })
     vim.keymap.set("n", "<leader>sd", require("telescope.builtin").grep_string, { desc = "Search Tags" })
