@@ -1,7 +1,7 @@
 -- Set completeopt to have a better completion experience
-vim.opt.completeopt = 'menuone,noselect'
+vim.opt.completeopt = "menuone,noselect"
 
-vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard = "unnamedplus"
 
 --Set smarttab
 vim.opt.smarttab = true
@@ -31,7 +31,7 @@ vim.wo.number = true
 vim.wo.relativenumber = false
 
 --Enable mouse mode
-vim.opt.mouse = 'a'
+vim.opt.mouse = "a"
 
 --Enable break indent
 vim.opt.breakindent = true
@@ -46,7 +46,7 @@ vim.opt.smartcase = true
 
 --Decrease update time
 vim.opt.updatetime = 50
-vim.wo.signcolumn = 'yes'
+vim.wo.signcolumn = "yes"
 
 vim.opt.termguicolors = true
 

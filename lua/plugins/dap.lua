@@ -1,15 +1,15 @@
 -- Dap (Debug Adapter Protocol)
 return {
-  'mfussenegger/nvim-dap',
+  "mfussenegger/nvim-dap",
   dependencies = {
-    'rcarriga/nvim-dap-ui',
-    'theHamsta/nvim-dap-virtual-text',
-    'nvim-telescope/telescope-dap.nvim',
+    "rcarriga/nvim-dap-ui",
+    "theHamsta/nvim-dap-virtual-text",
+    "nvim-telescope/telescope-dap.nvim",
     -- Debuggers
     --  'jbyuki/one-small-step-for-vimkind' -- Neovim Lua
-    'mfussenegger/nvim-dap-python' -- Python
+    "mfussenegger/nvim-dap-python", -- Python
   },
-  config = function ()
+  config = function()
     -- local dap = require('dap')
     -- dap.configurations.python = {
     --   {
@@ -18,8 +18,8 @@ return {
     --     request = 'launch';
     --     name = 'Launch file';
 
-    --     -- Options below are for debugpy, 
-    --     -- see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings 
+    --     -- Options below are for debugpy,
+    --     -- see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings
     --     -- for supported options
 
     --     program = '${file}';
@@ -40,8 +40,8 @@ return {
     --     end
     --   }
     -- }
-    require('dap-python').setup('~/.config/nvim/debug-adapters/debugpy/bin/python')
-    require('dapui').setup()
+    require("dap-python").setup("~/.config/nvim/debug-adapters/debugpy/bin/python")
+    require("dapui").setup()
 
     -- local dap = require"dap"
     -- dap.configurations.lua = {
@@ -57,5 +57,5 @@ return {
     -- dap.adapters.nlua = function(callback, config)
     --   callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
     -- end
-  end
+  end,
 }
