@@ -123,6 +123,7 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
+      require("neodev").setup({})
       --Enable (broadcasting) snippet capability for completion
       --cssls
       -- capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -185,8 +186,6 @@ return {
       --     capabilities = capabilities,
       --   })
       -- end
-
-      require("neodev").setup({})
 
       require("typescript-tools").setup({
         on_attach = on_attach,
@@ -289,6 +288,7 @@ return {
         --    max_item_count
         --    (more)
         sources = {
+          { name = "copilot" },
           { name = "nvim_lua" },
           { name = "nvim_lsp" },
           { name = "luasnip" },
