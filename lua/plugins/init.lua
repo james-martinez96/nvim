@@ -1,4 +1,5 @@
 return {
+  { "christoomey/vim-tmux-navigator" },
   { "windwp/nvim-autopairs", opts = {} },
   { "j-hui/fidget.nvim", opts = {} },
   { "numToStr/Comment.nvim", opts = {} },
@@ -12,6 +13,11 @@ return {
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help ibl`
     main = "ibl",
-    opts = {},
+    opts = {
+      -- debounce = 100,
+      -- indent = { char = "|" },
+      -- whitespace = { highlight = { "Whitespace", "NonText" } },
+      -- scope = { exclude = { language = { "lua" } } },
+    },
   },
 }

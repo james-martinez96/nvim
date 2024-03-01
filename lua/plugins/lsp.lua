@@ -113,7 +113,6 @@ return {
         vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format()' ]])
       end
 
-      -- Example custom server
       -- Make runtime files discoverable to the server
       local runtime_path = vim.split(package.path, ";", { plain = true })
       table.insert(runtime_path, "lua/?.lua")
@@ -128,12 +127,6 @@ return {
       --cssls
       -- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-      -- [[
-      -- TODO figure out how to change the defaults for each lang server
-      -- using this array and for loop
-      -- ]]
-      -- Enable the following language servers
-      -- they are using default settings
       local servers = {
         --[['sumneko_lua',]]
         clangd = {},
@@ -169,6 +162,7 @@ return {
       mason_lspconfig.setup({
         ensure_installed = vim.tbl_keys(servers),
       })
+
       mason_lspconfig.setup_handlers({
         function(server_name)
           require("lspconfig")[server_name].setup({
@@ -179,13 +173,6 @@ return {
           })
         end,
       })
-
-      -- for _, lsp in ipairs(servers) do
-      --   lspconfig[lsp].setup({
-      --     on_attach = on_attach,
-      --     capabilities = capabilities,
-      --   })
-      -- end
 
       require("typescript-tools").setup({
         on_attach = on_attach,
