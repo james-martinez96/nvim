@@ -7,6 +7,7 @@ return {
   { "mbbill/undotree" },
   { "tpope/vim-fugitive" },
   { "tpope/vim-surround" },
+  { "tpope/vim-sleuth" },
   {
     -- Add indentation guides even on blank lines
     "lukas-reineke/indent-blankline.nvim",
