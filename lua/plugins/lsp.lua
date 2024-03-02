@@ -72,7 +72,6 @@ return {
     },
     config = function()
       -- LSP settings
-      local lspconfig = require("lspconfig")
       local on_attach = function(_, bufnr)
         local opts = { noremap = true, silent = true }
         vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
