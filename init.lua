@@ -20,5 +20,6 @@ local opts = {}
 
 require("keymaps")
 require("options")
+require("utils")
 require("lazy").setup("plugins")
 

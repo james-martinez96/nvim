@@ -20,7 +20,7 @@ local attach_to_buffer = function(output_bufnr, pattern, command)
         end
       end
 
-      vim.api.nvim_buf_set_lines(output_bufnr, 0, -1, false, { "python output:" })
+      vim.api.nvim_buf_set_lines(output_bufnr, 0, -1, false, { "Output:" })
       vim.fn.jobstart(command, {
         stdout_bufferd = true,
         on_stdout = append_data,
