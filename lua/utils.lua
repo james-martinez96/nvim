@@ -44,3 +44,9 @@ end
 
 vim.api.nvim_create_user_command("LiveGrepGitRoot", live_grep_git_root, {})
 vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
+
+-- Source init.lua
+local function source_utils()
+  vim.api.nvim_command("source $HOME/.config/nvim/lua/utils.lua")
+end
+vim.api.nvim_create_user_command("SourceUtils", source_utils, {})
