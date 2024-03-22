@@ -33,7 +33,7 @@ vim.keymap.set("n", "<leader>n", "<cmd>:tabnext<CR>", opts)
 vim.keymap.set("n", "<leader>p", "<cmd>:tabprevious<CR>", opts)
 
 -- Session
-vim.keymap.set("n", "<leader>s", "<cmd>:mksession<CR>", opts)
+-- vim.keymap.set("n", "<leader>s", "<cmd>:mksession<CR>", opts)
 
 -- Git
 vim.keymap.set("n", "<leader>gp", "<cmd>Gitsigns preview_hunk_inline<cmd>", opts)

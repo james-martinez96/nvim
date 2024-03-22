@@ -21,5 +21,7 @@ local opts = {}
 require("keymaps")
 require("options")
 require("utils")
+require("session_manager")
+-- require("run")
 require("lazy").setup("plugins")
 

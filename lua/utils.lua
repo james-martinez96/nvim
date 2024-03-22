@@ -1,3 +1,18 @@
+-- Print lua table
+local function print_table(table)
+  for key, value in pairs(table) do
+    print(key .. ": " .. tostring(value))
+  end
+end
+
+-- auto reloading lua files
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = { "*.lua" },
+  callback = function()
+    vim.cmd("so %")
+  end,
+})
+
 -- Yank Highlight
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {

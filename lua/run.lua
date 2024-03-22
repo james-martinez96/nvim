@@ -1,77 +1,31 @@
-local function print_table(table)
-  for key, value in pairs(table) do
-    print(key .. ": " .. tostring(value))
+local popup = require("popup")
+
+vim.api.nvim_create_user_command("Run", function()
+  local function run_script()
+    local filename = vim.api.nvim_buf_get_name(0)
+
+    if filename == nil then
+      print("No file found (buffer is unsaved or unnamed)")
+      return
+    end
+    local command = "bash " .. filename
+    local handle = io.popen(command, "r")
+    local success, result = pcall(handle.read, handle, "*a")
+    handle:close()
+
+    if not success then
+      print("Error reading command object")
+    end
+
+    local lines = {}
+    for line in result:gmatch("[^\r\n]+") do
+      table.insert(lines, line)
+    end
+
+    popup.create_popup(lines)
   end
-end
-
-local popup_content = {
-  "Hello, this is a popup window!",
-  "You can put any content here.",
-  "Feel free to customize it as you wish!",
-  "Hello, this is a popup window!",
-  "Hello, this is a popup window!",
-  "Hello, this is a popup window!",
-  "Hello, this is a popup window!",
-  "Hello, this is a popup window!",
-  "You can put any content here.",
-  "Feel free to customize it as you wish!",
-  "You can put any content here.",
-  "Feel free to customize it as you wish!",
-  "You can put any content here.",
-  "Feel free to customize it as you wish!",
-  "You can put any content here.",
-  "Feel free to customize it as you wish!",
-  "You can put any content here.",
-  "Feel free to customize it as you wish!",
-}
-
--- Define the options for the popup window
-local popup_opts = {
-  relative = "win",
-  width = 40,
-  height = #popup_content + 2, -- Height adjusts based on content lines + padding
-  row = 10,
-  col = 10,
-  border = "single",
-  style = "minimal",
-}
-
--- Create the popup window
-local popup_winid = vim.api.nvim_open_win(4, true, popup_opts)
-local popup_bufnr = vim.api.nvim_win_get_buf(popup_winid)
-print(popup_bufnr, popup_winid)
-
--- Set the content of the popup window
-vim.api.nvim_buf_set_lines(popup_bufnr, 0, -1, false, popup_content)
-
--- Close the popup window when a key is pressed
-vim.api.nvim_buf_set_keymap(popup_bufnr, "n", "<Esc>", ":lua vim.api.nvim_win_close(".. tostring(popup_winid) ..", {force = true})<CR>", {noremap = true, silent = true})
--- vim.api.nvim_buf_set_keymap(popup_bufnr, "n", "<Esc>", vim.api.nvim_win_close(popup_winid), {noremap = true, silent = true})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  run_script()
+end, {})
 
 
 -- local attach_to_buffer = function(output_bufnr, pattern, command)
