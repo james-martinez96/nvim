@@ -1,32 +1,61 @@
+-- Debug
+-- relead cached module
+package.loaded["popup"] = nil
+
 local popup = require("popup")
+
+local file_types = {
+  sh = "bash",
+  lua = "lua",
+  py = "python",
+}
 
 vim.api.nvim_create_user_command("Run", function()
   local function run_script()
     local filename = vim.api.nvim_buf_get_name(0)
+    local file_extension = vim.fn.expand("%:e")
+    -- print(filename)
+    -- print(file_extension)
+    -- print(file_types[file_extension])
 
     if filename == nil then
       print("No file found (buffer is unsaved or unnamed)")
       return
     end
-    local command = "bash " .. filename
-    local handle = io.popen(command, "r")
-    local success, result = pcall(handle.read, handle, "*a")
-    handle:close()
 
-    if not success then
-      print("Error reading command object")
+    if file_extension == file_extension then
+      -- command is nil if the file extension is not in the file_types table
+      local command = file_types[file_extension] .. " " .. vim.fn.shellescape(filename)
+      -- print(command)
+      local handle = io.popen(command, "r")
+
+      if handle then
+        local result = handle:read("*a")
+        handle:close()
+
+        local lines = {}
+
+        for line in result:gmatch("[^\r\n]+") do
+          table.insert(lines, line)
+        end
+
+        if next(lines) == nil then
+          print("No data")
+          return
+        end
+
+        popup.create_popup(lines)
+      else
+        return
+      end
     end
-
-    local lines = {}
-    for line in result:gmatch("[^\r\n]+") do
-      table.insert(lines, line)
-    end
-
-    popup.create_popup(lines)
   end
-  run_script()
-end, {})
 
+  local success, err = pcall(run_script)
+  if not success then
+    print("Error:", err)
+  end
+end, {})
 
 -- local attach_to_buffer = function(output_bufnr, pattern, command)
 --   vim.api.nvim_create_autocmd("BufWritePost", {
