@@ -34,8 +34,8 @@ end
 function M.create_split(data, buf_name)
   -- print(tonumber(buf_name))
 
-  local bufnr = vim.fn.bufnr(buf_name)
-  print(buf_name, bufnr)
+    local bufnr = vim.fn.bufnr(buf_name)
+    print(buf_name, bufnr)
 
     local function buffer_has_window()
       for _, winid in ipairs(vim.api.nvim_list_wins()) do
