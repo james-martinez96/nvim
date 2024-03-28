@@ -14,9 +14,6 @@ vim.api.nvim_create_user_command("Run", function()
   local function run_script()
     local filename = vim.api.nvim_buf_get_name(0)
     local file_extension = vim.fn.expand("%:e")
-    -- print(filename)
-    -- print(file_extension)
-    -- print(file_types[file_extension])
 
     if filename == nil then
       print("No file found (buffer is unsaved or unnamed)")
@@ -44,7 +41,7 @@ vim.api.nvim_create_user_command("Run", function()
           return
         end
 
-        popup.create_popup(lines)
+        popup.create_split(lines, file_extension)
       else
         return
       end
