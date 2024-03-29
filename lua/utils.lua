@@ -1,17 +1,34 @@
 -- Print lua table
-local function print_table(table)
-  for key, value in pairs(table) do
-    print(key .. ": " .. tostring(value))
-  end
-end
+-- local function print_table(table)
+--   for key, value in pairs(table) do
+--     print(key .. ": " .. tostring(value))
+--   end
+-- end
 
 -- auto reloading lua files
 vim.api.nvim_create_autocmd("BufWritePost", {
-  pattern = { "*.lua" },
+  pattern = vim.fn.expand("~") .. ".config/nvim/*.lua" ,
   callback = function()
     vim.cmd("so %")
   end,
 })
+
+-- auto resizez splits
+-- local auto_resize_group = vim.api.nvim_create_augroup("AutoResize", { clear = true })
+-- vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
+--   callback = function()
+--     local win = vim.api.nvim_get_current_win()
+--     local winwidth = vim.api.nvim_win_get_width(win)
+--     -- local id = vim.api.nvim_create_augroup("AutoResize", {clear=true})
+--     -- vim.api.nvim_del_augroup_by_id(id)
+--     if winwidth <= 50 then
+--       vim.cmd([[set winwidth=20]])
+--     elseif winwidth >= 20 then
+--       vim.cmd([[set winwidth=50]])
+--       vim.cmd([[wincmd =]])
+--     end
+--   end,
+-- })
 
 -- Yank Highlight
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
@@ -58,7 +75,7 @@ local function live_grep_git_root()
 end
 
 vim.api.nvim_create_user_command("LiveGrepGitRoot", live_grep_git_root, {})
-vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
+vim.keymap.set("n", "<leader>sG", ":LiveGrepGitRoot<cr>", { desc = "[S]earch by [G]rep on Git Root" })
 
 -- Source init.lua
 local function source_utils()

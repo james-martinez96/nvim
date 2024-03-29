@@ -21,4 +21,5 @@ return {
       -- scope = { exclude = { language = { "lua" } } },
     },
   },
+  { dir = "~/.config/nvim/test_plugin.nvim" }
 }

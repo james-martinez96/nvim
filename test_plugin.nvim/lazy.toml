@@ -1,0 +1,5 @@
+[plugin]
+name = "mylazyplugin"
+description = "A description of my Lazy.nvim plugin"
+author = "Your Name"
+version = "0.1"
