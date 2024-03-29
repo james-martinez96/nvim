@@ -28,6 +28,7 @@ function M.create_popup(data)
   -- vim.api.nvim_buf_set_keymap(popup_bufnr, "n", "<Esc>", vim.api.nvim_win_close(popup_winid), {noremap = true, silent = true})
 end
 
+-- NOTE check buflisted()
 ---Create a split
 ---@param data table
 ---@param buf_name string

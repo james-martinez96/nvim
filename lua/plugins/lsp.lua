@@ -1,7 +1,18 @@
 return {
+  -- {
+  --   "folke/neodev.nvim",
+  --   config = true,
+  -- },
   {
-    "folke/neodev.nvim",
-    config = true,
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
+    },
   },
 
   {
@@ -121,17 +132,16 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-      require("neodev").setup({})
+      -- require("neodev").setup({})
       --Enable (broadcasting) snippet capability for completion
       --cssls
       -- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
       local servers = {
-        --[['sumneko_lua',]]
         clangd = {},
         rust_analyzer = {},
-        --[['pyright',]]
-        jedi_language_server = {},
+        -- jedi_language_server = {},
+        pyright = {},
         tsserver = {},
         --[['eslint',]]
         tailwindcss = {},
