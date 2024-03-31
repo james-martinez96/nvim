@@ -24,69 +24,54 @@ function M.create_popup(data)
   vim.api.nvim_buf_set_lines(popup_bufnr, 0, -1, false, data)
 
   -- Close the popup window when a key is pressed
-  vim.api.nvim_buf_set_keymap(popup_bufnr, "n", "<Esc>", ":lua vim.api.nvim_win_close(".. tostring(popup_winid) ..", {force = true})<CR>", {noremap = true, silent = true})
+  vim.api.nvim_buf_set_keymap(
+    popup_bufnr,
+    "n",
+    "<Esc>",
+    ":lua vim.api.nvim_win_close(" .. tostring(popup_winid) .. ", {force = true})<CR>",
+    { noremap = true, silent = true }
+  )
   -- vim.api.nvim_buf_set_keymap(popup_bufnr, "n", "<Esc>", vim.api.nvim_win_close(popup_winid), {noremap = true, silent = true})
 end
 
--- NOTE check buflisted()
 ---Create a split
 ---@param data table
 ---@param buf_name string
 function M.create_split(data, buf_name)
-  -- print(tonumber(buf_name))
+  local buf = vim.fn.bufadd(buf_name)
+  -- print(buf)
+  -- local is_loaded = vim.fn.bufloaded(buf)
+  -- print(is_loaded)
 
-    local bufnr = vim.fn.bufnr(buf_name)
-    print(buf_name, bufnr)
+  ---Check to see if a buffer has a window
+  ---returns true if there is a window to the buffer
+  ---@return boolean
+  local function buffer_has_window()
+    local windows = vim.api.nvim_list_wins()
+    local has_window = false
 
-    local function buffer_has_window()
-      for _, winid in ipairs(vim.api.nvim_list_wins()) do
-        local win_bufnr = vim.api.nvim_win_get_buf(winid)
-        if win_bufnr == bufnr then
-          -- print("true", winid)
-          vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, data)
-          return true
-        else
-          -- print("false", winid)
-          vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, data)
-          vim.api.nvim_command("vsplit")
-          vim.api.nvim_command("buffer" .. bufnr)
-          return false
-        end
+    for win, winid in ipairs(windows) do
+      local win_bufnr = vim.api.nvim_win_get_buf(winid)
+      -- print("win: " .. win, "id: " .. winid, "buf: " .. win_bufnr)
+
+      if buf == win_bufnr then
+        has_window = true
+        return true
       end
     end
-    buffer_has_window()
-
-  if buffer_has_window() then
-    print('a window is open to the buffer')
-  else
-    print('there is no window to this buffer')
+    return has_window
   end
 
-
-  -- if bufnr == nil then
-  --   -- bufnr = vim.api.nvim_create_buf(true, true)
-  --   -- vim.api.nvim_buf_set_option(bufnr, "filetype", buf_name)
-  --   -- vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, data)
-  --   -- vim.api.nvim_command("vsplit")
-  --   -- vim.api.nvim_command("buffer" .. bufnr)
-  -- elseif vim.api.nvim_buf_is_valid(bufnr) then
-  --
-  --
-  --   -- for _, winid in ipairs(vim.api.nvim_list_wins()) do
-  --   --   local win_bufnr = vim.api.nvim_win_get_buf(winid)
-  --   --   if win_bufnr == bufnr then
-  --   --     print('win open', win_bufnr)
-  --   --     vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, data)
-  --   --   else
-  --   --     -- vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, data)
-  --   --     -- vim.api.nvim_command("vsplit")
-  --   --     -- vim.api.nvim_command("buffer" .. bufnr)
-  --   --     print('else')
-  --   --   end
-  --   -- end
-  -- else
-  --   print('explode')
-  -- end
+  if buffer_has_window() then
+    -- print("a window is open to the buffer")
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, data)
+  else
+    -- print("there is no window to this buffer")
+    -- print("creating one")
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, data)
+    vim.api.nvim_command("vsplit")
+    vim.api.nvim_command("buffer" .. buf)
+  end
 end
 
 return M
