@@ -128,6 +128,7 @@ return {
 
       local servers = {
         --[['sumneko_lua',]]
+        gopls = {},
         clangd = {},
         rust_analyzer = {},
         --[['pyright',]]
