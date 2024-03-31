@@ -1,6 +1,12 @@
 -- Debug
--- relead cached module
+-- reload cached module 
 package.loaded["popup"] = nil
+
+-- TODO:
+-- get filetypes based on vim filetypes and not the file extension
+-- error handling
+-- make this a plugin
+
 
 local popup = require("popup")
 
@@ -8,6 +14,10 @@ local file_types = {
   sh = "bash",
   lua = "lua",
   py = "python",
+  lisp = "sbcl --script",
+  c = "gcc -o",
+  rb = "ruby",
+  js = "node",
 }
 
 vim.api.nvim_create_user_command("Run", function()
@@ -23,14 +33,57 @@ vim.api.nvim_create_user_command("Run", function()
     if file_extension == file_extension then
       -- command is nil if the file extension is not in the file_types table
       local command = file_types[file_extension] .. " " .. vim.fn.shellescape(filename)
+
+      ---Handle C files
+      if file_extension == "c" then
+        print("this is a c file")
+
+        print("filename: ", filename)
+
+        local c_file = vim.fn.expand("%t")
+        print("C file: ", c_file)
+
+        local output_file = string.gsub(c_file, ".c", "")
+        print("Output file: ", output_file)
+
+        local compile_command = file_types[file_extension] .. " " .. output_file.. " " .. vim.fn.shellescape(c_file)
+        print("gcc command: ", compile_command)
+
+        -- TODO compile c program
+        local function compile()
+          -- local handle = io.open(command, "r")
+          -- handle:close()
+          print('to be implemented')
+          print('compiling...')
+          vim.api.nvim_exec2("!" .. compile_command, {})
+          print('done')
+
+          local program_output = vim.fn.system("./"..output_file)
+          print(program_output)
+
+          local t_output = {}
+          for line in program_output:gmatch("[^\r\n]+") do
+            table.insert(t_output, line)
+          end
+          print("t: ", t_output)
+          popup.create_split(t_output, file_extension)
+        end
+
+        local success, err = pcall(compile)
+        if not success then
+          print("Error", err)
+        end
+        return
+      end
+
       -- print(command)
-      local handle = io.popen(command, "r")
+      local handle, err = io.popen(command, "r")
+
+      local lines = {}
 
       if handle then
         local result = handle:read("*a")
         handle:close()
-
-        local lines = {}
 
         for line in result:gmatch("[^\r\n]+") do
           table.insert(lines, line)
@@ -43,6 +96,11 @@ vim.api.nvim_create_user_command("Run", function()
 
         popup.create_split(lines, file_extension)
       else
+        print(err)
+        return
+      end
+      if err then
+        print(err)
         return
       end
     end
@@ -51,6 +109,7 @@ vim.api.nvim_create_user_command("Run", function()
   local success, err = pcall(run_script)
   if not success then
     print("Error:", err)
+    return
   end
 end, {})
 
