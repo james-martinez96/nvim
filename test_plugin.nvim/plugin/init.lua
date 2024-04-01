@@ -1,8 +1,5 @@
-local function greet()
-  print('long task started')
-  vim.api.nvim_out_write("Hello from Lazy Example Plugin!\n")
-end
+local docker = require("docker")
 
-vim.api.nvim_create_user_command("Greet", function()
-  greet()
+vim.api.nvim_create_user_command("Docker", function()
+  docker.show_docker_images()
 end, {})
