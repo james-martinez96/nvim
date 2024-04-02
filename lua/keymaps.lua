@@ -21,7 +21,7 @@ vim.keymap.set("n", "<leader>t", [[:term<CR>]], opts)
 vim.keymap.set("n", "<leader>vt", [[:vs +term<CR>]], opts)
 -- vim.keymap.set('n', '<leader>ht', [[:sp +term<CR>]], opts)
 
--- Wincmd
+-- Windows
 vim.keymap.set("n", "<leader>h", "<cmd>:wincmd h<CR>", opts)
 vim.keymap.set("n", "<leader>j", "<cmd>:wincmd j<CR>", opts)
 vim.keymap.set("n", "<leader>k", "<cmd>:wincmd k<CR>", opts)

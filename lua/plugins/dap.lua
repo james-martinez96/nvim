@@ -2,7 +2,13 @@
 return {
   "mfussenegger/nvim-dap",
   dependencies = {
-    "rcarriga/nvim-dap-ui",
+    {
+      "rcarriga/nvim-dap-ui",
+      dependencies = {
+        -- "mfussenegger/nvim-dap",
+        "nvim-neotest/nvim-nio"
+      }
+    },
     "theHamsta/nvim-dap-virtual-text",
     "nvim-telescope/telescope-dap.nvim",
     -- Debuggers
@@ -40,22 +46,22 @@ return {
     --     end
     --   }
     -- }
-    require("dap-python").setup("~/.config/nvim/debug-adapters/debugpy/bin/python")
+    require("dap-python").setup("~/.local/share/nvim/dap-adapters/python/debugpy/bin/python")
     require("dapui").setup()
 
-    -- local dap = require"dap"
-    -- dap.configurations.lua = {
-    --   {
-    --     type = 'nlua',
-    --     request = 'attach',
-    --     name = "Attach to running Neovim instance",
-    --     host = "127.0.0.1",
-    --     port = 8086
-    --   }
-    -- }
-
-    -- dap.adapters.nlua = function(callback, config)
-    --   callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
-    -- end
+   -- local dap = require"dap"
+   -- dap.configurations.lua = {
+   --   {
+   --     type = 'nlua',
+   --     request = 'attach',
+   --     name = "Attach to running Neovim instance",
+   --     host = "127.0.0.1",
+   --     port = 8086
+   --   }
+   -- }
+   -- 
+   -- dap.adapters.nlua = function(callback, config)
+   --   callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
+   -- end
   end,
 }

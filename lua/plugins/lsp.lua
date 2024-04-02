@@ -121,7 +121,9 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-      require("neodev").setup({})
+      require("neodev").setup({
+        -- library = { plugins = { "nvim-dap-ui" }, types = true}
+      })
       --Enable (broadcasting) snippet capability for completion
       --cssls
       -- capabilities.textDocument.completion.completionItem.snippetSupport = true
