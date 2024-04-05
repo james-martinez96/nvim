@@ -80,5 +80,6 @@ vim.keymap.set("n", "<leader>sG", ":LiveGrepGitRoot<cr>", { desc = "[S]earch by 
 -- Source init.lua
 local function source_utils()
   vim.api.nvim_command("source $HOME/.config/nvim/lua/utils.lua")
+  vim.api.nvim_command("source $HOME/.config/nvim/lua/run.lua")
 end
 vim.api.nvim_create_user_command("SourceUtils", source_utils, {})

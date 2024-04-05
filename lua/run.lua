@@ -7,7 +7,6 @@ package.loaded["popup"] = nil
 -- error handling
 -- make this a plugin
 
-
 local popup = require("popup")
 
 local file_types = {
@@ -19,6 +18,33 @@ local file_types = {
   rb = "ruby",
   js = "node",
 }
+
+---Run a program in the background
+---@param program string
+---@param args table
+---@return number
+local function run_program_in_background(program, args)
+  local job_id = vim.fn.jobstart(program, {
+    args = args,
+    detach = true,
+    stdout_bufferd = true,
+    on_stdout = function(_, data, _)
+      popup.create_split(data, "background data")
+      -- table.insert(output, data)
+    end,
+    on_stderr = function(_, data, _)
+      -- popup.create_split(data, "Error")
+      print("Error", data)
+    end,
+    on_exit = function(_, data, _)
+      print("Exit", data)
+    end
+  })
+
+  print("Program started in the background with job ID: " .. job_id)
+  return job_id
+end
+
 
 vim.api.nvim_create_user_command("Run", function()
   local function run_script()
@@ -35,74 +61,82 @@ vim.api.nvim_create_user_command("Run", function()
       local command = file_types[file_extension] .. " " .. vim.fn.shellescape(filename)
 
       ---Handle C files
-      if file_extension == "c" then
-        print("this is a c file")
-
-        print("filename: ", filename)
-
-        local c_file = vim.fn.expand("%t")
-        print("C file: ", c_file)
-
-        local output_file = string.gsub(c_file, ".c", "")
-        print("Output file: ", output_file)
-
-        local compile_command = file_types[file_extension] .. " " .. output_file.. " " .. vim.fn.shellescape(c_file)
-        print("gcc command: ", compile_command)
-
-        -- TODO compile c program
-        local function compile()
-          -- local handle = io.open(command, "r")
-          -- handle:close()
-          print('to be implemented')
-          print('compiling...')
-          vim.api.nvim_exec2("!" .. compile_command, {})
-          print('done')
-
-          local program_output = vim.fn.system("./"..output_file)
-          print(program_output)
-
-          local t_output = {}
-          for line in program_output:gmatch("[^\r\n]+") do
-            table.insert(t_output, line)
-          end
-          print("t: ", t_output)
-          popup.create_split(t_output, file_extension)
-        end
-
-        local success, err = pcall(compile)
-        if not success then
-          print("Error", err)
-        end
-        return
-      end
+      -- if file_extension == "c" then
+      --   print("this is a c file")
+      --
+      --   print("filename: ", filename)
+      --
+      --   local c_file = vim.fn.expand("%t")
+      --   print("C file: ", c_file)
+      --
+      --   local output_file = string.gsub(c_file, ".c", "")
+      --   print("Output file: ", output_file)
+      --
+      --   local compile_command = file_types[file_extension] .. " " .. output_file.. " " .. vim.fn.shellescape(c_file)
+      --   print("gcc command: ", compile_command)
+      --
+      --   -- TODO compile c program
+      --   local function compile()
+      --     -- local handle = io.open(command, "r")
+      --     -- handle:close()
+      --     print('to be implemented')
+      --     print('compiling...')
+      --     -- vim.api.nvim_exec2("!" .. compile_command, {})
+      --     -- Run the compile step in the background
+      --     local job_id = run_program_in_background("gcc", {"-o", output_file, c_file})
+      --     print("PID: ", vim.fn.jobpid(job_id))
+      --     print('done')
+      --
+      --     -- Run the program and store the output
+      --     local program_output = vim.fn.system("./"..output_file)
+      --     print('Output>>>>>>>>>>>>>')
+      --     print(program_output)
+      --     print('End<<<<<<<<<<<<<<<<')
+      --
+      --     local t_output = {}
+      --     for line in program_output:gmatch("[^\r\n]+") do
+      --       table.insert(t_output, line)
+      --     end
+      --     popup.create_split(t_output, file_extension)
+      --   end
+      --
+      --   local success, err = pcall(compile)
+      --   if not success then
+      --     print("Error", err)
+      --   end
+      --   return
+      -- end
 
       -- print(command)
-      local handle, err = io.popen(command, "r")
+      -- local handle, err = io.popen(command, "r")
+      local job_id = run_program_in_background(command, {})
+      -- local pid = vim.fn.jobpid(job_id)
+      -- print(pid)
 
-      local lines = {}
+      -- local lines = {}
 
-      if handle then
-        local result = handle:read("*a")
-        handle:close()
-
-        for line in result:gmatch("[^\r\n]+") do
-          table.insert(lines, line)
-        end
-
-        if next(lines) == nil then
-          print("No data")
-          return
-        end
-
-        popup.create_split(lines, file_extension)
-      else
-        print(err)
-        return
-      end
-      if err then
-        print(err)
-        return
-      end
+      -- if handle then
+      --   local result = handle:read("*a")
+      --   handle:close()
+      --
+      --   for line in result:gmatch("[^\r\n]+") do
+      --     table.insert(lines, line)
+      --   end
+      --
+      --   if next(lines) == nil then
+      --     print("No data")
+      --     return
+      --   end
+      --
+      --   popup.create_split(lines, file_extension)
+      -- else
+      --   print(err)
+      --   return
+      -- end
+      -- if err then
+      --   print(err)
+      --   return
+      -- end
     end
   end
 
