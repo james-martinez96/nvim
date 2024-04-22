@@ -43,8 +43,8 @@ function M.create_split(data, buf_name)
   vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')  -- Set bufhidden to 'wipe' to automatically close the buffer when it's no longer visible
   vim.api.nvim_buf_set_option(buf, 'swapfile', false) -- Set swapfile to false
 
-  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-  print('lines:',vim.tbl_flatten(lines))
+  -- local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+  -- print('lines:',vim.tbl_flatten(lines))
 
   ---Check to see if a buffer has a window
   ---returns true if there is a window to the buffer
@@ -67,7 +67,7 @@ function M.create_split(data, buf_name)
 
   if buffer_has_window() then
     -- print("a window is open to the buffer")
-    vim.api.nvim_buf_set_lines(buf, -2, -1, false, data)
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, data)
     -- vim.api.nvim_buf_get_lines()
   else
     -- print("there is no window to this buffer")
