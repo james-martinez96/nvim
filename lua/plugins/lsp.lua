@@ -47,14 +47,21 @@ return {
 
   {
     "nvimtools/none-ls.nvim",
+    dependencies = {
+      "nvimtools/none-ls-extras.nvim",
+    },
     config = function()
       local null_ls = require("null-ls")
 
       null_ls.setup({
         sources = {
           null_ls.builtins.formatting.stylua,
-          null_ls.builtins.formatting.prettier,
-          null_ls.builtins.formatting.eslint,
+          -- null_ls.builtins.formatting.prettierd,
+          require("none-ls.formatting.eslint_d"),
+          require("none-ls.code_actions.eslint_d"),
+          -- require("none-ls.builtins.formatting.prettier"),
+          -- require("none-ls.builtins.formatting.eslint"),
+          -- require("none-ls.builtins.code_actions.refactor"),
         },
       })
 
@@ -139,11 +146,13 @@ return {
 
       local servers = {
         clangd = {},
+        -- cpptools = {},
         rust_analyzer = {},
         -- jedi_language_server = {},
         pyright = {},
         tsserver = {},
-        --[['eslint',]]
+        kotlin_language_server = {},
+        -- eslint = {},
         tailwindcss = {},
         cssls = {},
         cssmodules_ls = {},
