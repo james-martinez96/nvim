@@ -59,7 +59,6 @@ function M.create_split(data, buf_name)
 
       if buf == win_bufnr then
         has_window = true
-        return true
       end
     end
     return has_window
@@ -67,6 +66,7 @@ function M.create_split(data, buf_name)
 
   if buffer_has_window() then
     -- print("a window is open to the buffer")
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, {}) -- this does not clear the buffer for some reason
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, data)
     -- vim.api.nvim_buf_get_lines()
   else

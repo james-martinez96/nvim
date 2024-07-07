@@ -1,5 +1,5 @@
 -- Debug
--- reload cached module 
+-- reload cached module
 package.loaded["popup"] = nil
 
 -- TODO:
@@ -20,6 +20,45 @@ local file_types = {
   js = "node",
 }
 
+local stdout_data = {}
+local stderr_data = {}
+local on_exit_data = {}
+
+---@param job_id number
+---@param data table
+---@param event string
+local function on_output(job_id, data, event)
+  if event == "stdout" then
+    for _, line in ipairs(data) do
+      if line ~= "" then
+        table.insert(stdout_data, line)
+      end
+    end
+    popup.create_split(stdout_data, "output")
+  end
+end
+
+---@param job_id number
+---@param data table
+---@param event string
+local function on_error(job_id, data, event)
+  if event == "stderr" then
+    for _, line in ipairs(data) do
+      if line ~= "" then
+        table.insert(stderr_data, line)
+      end
+    end
+    -- popup.create_split(stderr_data, "error")
+  end
+end
+
+---@param job_id number
+---@param exit_code number
+---@param event string
+local function on_exit(job_id, exit_code, event)
+  print("Job exited with code: " .. exit_code)
+end
+
 ---Run a program in the background
 ---@param program string
 ---@param args table
@@ -27,19 +66,12 @@ local file_types = {
 local function run_program_in_background(program, args)
   local job_id = vim.fn.jobstart(program, {
     args = args,
-    detach = true,
+    -- detach = true,
     stdout_bufferd = true,
-    on_stdout = function(_, data, _)
-      popup.create_split(data, "background data")
-      -- table.insert(output, data)
-    end,
-    on_stderr = function(_, data, _)
-      -- popup.create_split(data, "Error")
-      print("Error", data)
-    end,
-    on_exit = function(_, data, _)
-      print("Exit", data)
-    end
+    stderr_bufferd = true,
+    on_stdout = on_output,
+    on_stderr = on_error,
+    on_exit = on_exit,
   })
 
   print("Program started in the background with job ID: " .. job_id)
@@ -49,6 +81,7 @@ end
 -- vim.api.nvim_create_user_command("Stop", function ()
 --   vim.fn.jobstop(job_id)
 -- end, {})
+
 
 vim.api.nvim_create_user_command("Run", function()
   local function run_script()
@@ -71,9 +104,9 @@ vim.api.nvim_create_user_command("Run", function()
         -- print("filename: ", filename)
         local c_file = vim.fn.expand("%t")
         -- print("C file: ", c_file)
-        local output_file = string.gsub(c_file, ".c", "")
+        local output_file = string.gsub(c_file, "%.%w+$", "")
         -- print("Output file: ", output_file)
-        local compile_command = file_types[file_extension] .. " " .. output_file.. " " .. vim.fn.shellescape(c_file)
+        local compile_command = file_types[file_extension] .. " " .. output_file .. " " .. vim.fn.shellescape(c_file)
         -- print("compile command: ", compile_command)
 
         -- Compile C program
@@ -89,7 +122,7 @@ vim.api.nvim_create_user_command("Run", function()
           -- print('done')
 
           -- Run the program and store the output
-          local program_output = vim.fn.system("./"..output_file)
+          local program_output = vim.fn.system("./" .. output_file)
           -- print('Output>>>>>>>>>>>>>')
           -- print(program_output)
           -- print('End<<<<<<<<<<<<<<<<')
