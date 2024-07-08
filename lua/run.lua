@@ -3,8 +3,10 @@
 package.loaded["popup"] = nil
 
 -- TODO:
+-- compiler arguments
 -- get filetypes based on vim filetypes and not the file extension
 -- error handling
+-- remove comments
 -- make this a plugin
 
 local popup = require("popup")
@@ -13,7 +15,7 @@ local file_types = {
   sh = "bash",
   lua = "lua",
   py = "python",
-  lisp = "sbcl --script",
+  lisp = "clisp",
   c = "gcc -o",
   cpp = "g++ -o",
   rb = "ruby",
@@ -24,11 +26,12 @@ local stdout_data = {}
 local stderr_data = {}
 local on_exit_data = {}
 
+-- the data param is an empty string if there is no output: { "" }
 ---@param job_id number
 ---@param data table
 ---@param event string
 local function on_output(job_id, data, event)
-  if event == "stdout" then
+  if data[2] ~= nil then
     for _, line in ipairs(data) do
       if line ~= "" then
         table.insert(stdout_data, line)
@@ -42,13 +45,11 @@ end
 ---@param data table
 ---@param event string
 local function on_error(job_id, data, event)
-  if event == "stderr" then
+  if data[2] ~= nil then
     for _, line in ipairs(data) do
-      if line ~= "" then
-        table.insert(stderr_data, line)
-      end
+      table.insert(stderr_data, line)
     end
-    -- popup.create_split(stderr_data, "error")
+    popup.create_split(stderr_data, "error")
   end
 end
 
@@ -56,7 +57,10 @@ end
 ---@param exit_code number
 ---@param event string
 local function on_exit(job_id, exit_code, event)
-  print("Job exited with code: " .. exit_code)
+  if on_exit_data ~= nil then
+    table.insert(on_exit_data, exit_code)
+    print("Job exited with code: " .. exit_code)
+  end
 end
 
 ---Run a program in the background
@@ -64,11 +68,15 @@ end
 ---@param args table
 ---@return number
 local function run_program_in_background(program, args)
+  -- reset the data tables
+  stdout_data = {}
+  stderr_data = {}
+  on_exit_data = {}
   local job_id = vim.fn.jobstart(program, {
     args = args,
     -- detach = true,
-    stdout_bufferd = true,
-    stderr_bufferd = true,
+    stdout_buffered = false,
+    stderr_buffered = false,
     on_stdout = on_output,
     on_stderr = on_error,
     on_exit = on_exit,
@@ -82,73 +90,63 @@ end
 --   vim.fn.jobstop(job_id)
 -- end, {})
 
+local function run_script()
+  local filename = vim.api.nvim_buf_get_name(0)
+  local file_extension = vim.fn.expand("%:e")
 
-vim.api.nvim_create_user_command("Run", function()
-  local function run_script()
-    local filename = vim.api.nvim_buf_get_name(0)
-    local file_extension = vim.fn.expand("%:e")
-
-    if filename == nil then
-      print("No file found (buffer is unsaved or unnamed)")
-      return
-    end
-
-    if file_types[file_extension] then
-      -- command is nil if the file extension is not in the file_types table
-      local command = file_types[file_extension] .. " " .. vim.fn.shellescape(filename)
-
-      ---Handle C files
-      --this does not handle input yet
-      if file_extension == "c" or file_extension == "cpp" then
-        -- print("this is a c file")
-        -- print("filename: ", filename)
-        local c_file = vim.fn.expand("%t")
-        -- print("C file: ", c_file)
-        local output_file = string.gsub(c_file, "%.%w+$", "")
-        -- print("Output file: ", output_file)
-        local compile_command = file_types[file_extension] .. " " .. output_file .. " " .. vim.fn.shellescape(c_file)
-        -- print("compile command: ", compile_command)
-
-        -- Compile C program
-        local function compile()
-          -- local handle = io.open(command, "r")
-          -- handle:close()
-          -- print('to be implemented')
-          -- print('compiling...')
-          vim.api.nvim_exec2("!" .. compile_command, {})
-          -- Run the compile step in the background
-          -- local job_id = run_program_in_background("gcc -o", {output_file, c_file})
-          -- print("PID: ", vim.fn.jobpid(job_id))
-          -- print('done')
-
-          -- Run the program and store the output
-          local program_output = vim.fn.system("./" .. output_file)
-          -- print('Output>>>>>>>>>>>>>')
-          -- print(program_output)
-          -- print('End<<<<<<<<<<<<<<<<')
-
-          local t_output = {}
-          for line in program_output:gmatch("[^\r\n]+") do
-            table.insert(t_output, line)
-          end
-          popup.create_split(t_output, file_extension)
-        end
-
-        local success, err = pcall(compile)
-        if not success then
-          print("Error", err)
-        end
-        return
-      end
-
-      -- print(command)
-      -- local handle, err = io.popen(command, "r")
-      local job_id = run_program_in_background(command, {})
-      -- local pid = vim.fn.jobpid(job_id)
-      -- print(pid)
-    end
+  if filename == nil then
+    print("No file found (buffer is unsaved or unnamed)")
+    return
+  elseif file_extension == "txt" then
+    print("this is a text file")
   end
 
+  if file_types[file_extension] then
+    -- command is nil if the file extension is not in the file_types table
+    local command = file_types[file_extension] .. " " .. vim.fn.shellescape(filename)
+
+    ---Handle C files
+    --this does not handle input yet
+    if file_extension == "c" or file_extension == "cpp" then
+      -- print("this is a c file")
+      -- print("filename: ", filename)
+      local c_file = vim.fn.expand("%:t")
+      -- print("C file: ", c_file)
+      -- local output_file = string.gsub(c_file, "%.%w+$", "")
+      local output_file = c_file:match("(.+)%..+$") or c_file
+      -- print("Output file: ", output_file)
+      local compile_command = file_types[file_extension] .. " " .. output_file .. " " .. vim.fn.shellescape(c_file)
+      -- print("compile command: ", compile_command)
+
+      -- Compile C program
+      local function compile()
+        print(compile_command)
+        print("stderr_data", vim.inspect(stderr_data[1]))
+        local job_id = run_program_in_background(compile_command, {})
+        print("stderr_data", vim.inspect(stderr_data[1]))
+        -- print("job_id", job_id)
+        print("on_exit_data", vim.inspect(on_exit_data))
+
+        local job_status = vim.fn.jobwait({ job_id })
+
+        if job_status[1] == 0 then
+          -- vim.inspect(stderr_data)
+          -- Execute Binary
+          print("Executing Binary")
+          run_program_in_background("./" .. output_file, {})
+        end
+      end
+      compile()
+    else
+      -- Run a script
+      local job_id = run_program_in_background(command, {})
+      local pid = vim.fn.jobpid(job_id)
+      print(pid)
+    end
+  end
+end
+
+vim.api.nvim_create_user_command("Run", function()
   local success, err = pcall(run_script)
   if not success then
     print("Error:", err)
