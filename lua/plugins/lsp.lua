@@ -183,6 +183,8 @@ return {
         end,
       })
 
+      require("lspconfig").gdscript.setup(capabilities)
+
       -- require("typescript-tools").setup({
       --   on_attach = on_attach,
       --   capabilities = capabilities,
