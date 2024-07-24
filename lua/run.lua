@@ -10,6 +10,7 @@ package.loaded["popup"] = nil
 -- make this a plugin
 
 local popup = require("popup")
+local log = require("log")
 
 local file_types = {
   sh = "bash",
@@ -59,7 +60,8 @@ end
 local function on_exit(job_id, exit_code, event)
   if on_exit_data ~= nil then
     table.insert(on_exit_data, exit_code)
-    print("Job exited with code: " .. exit_code)
+    -- print("Job exited with code: " .. exit_code)
+    log.debug("Job exited with code: " .. exit_code)
   end
 end
 
@@ -82,7 +84,8 @@ local function run_program_in_background(program, args)
     on_exit = on_exit,
   })
 
-  print("Program started in the background with job ID: " .. job_id)
+  -- print("Program started in the background with job ID: " .. job_id)
+  log.debug("Program started in the background with job ID: " .. job_id)
   return job_id
 end
 
@@ -120,19 +123,15 @@ local function run_script()
 
       -- Compile C program
       local function compile()
-        print(compile_command)
-        print("stderr_data", vim.inspect(stderr_data[1]))
+        -- print(compile_command)
         local job_id = run_program_in_background(compile_command, {})
-        print("stderr_data", vim.inspect(stderr_data[1]))
-        -- print("job_id", job_id)
-        print("on_exit_data", vim.inspect(on_exit_data))
 
         local job_status = vim.fn.jobwait({ job_id })
 
         if job_status[1] == 0 then
           -- vim.inspect(stderr_data)
           -- Execute Binary
-          print("Executing Binary")
+          -- print("Executing Binary")
           run_program_in_background("./" .. output_file, {})
         end
       end
@@ -141,7 +140,8 @@ local function run_script()
       -- Run a script
       local job_id = run_program_in_background(command, {})
       local pid = vim.fn.jobpid(job_id)
-      print(pid)
+      -- print(pid)
+      log.info("Running: " .. command .. " with pid:" .. pid)
     end
   end
 end
@@ -149,6 +149,7 @@ end
 vim.api.nvim_create_user_command("Run", function()
   local success, err = pcall(run_script)
   if not success then
+    log.error("Error: " ..  err)
     print("Error:", err)
     return
   end
