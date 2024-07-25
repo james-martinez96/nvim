@@ -1,1 +1,1 @@
-look at: win.execute() and execute()
+my personal neovim config
