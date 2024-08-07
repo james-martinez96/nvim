@@ -30,19 +30,6 @@ return {
 
   {
     "williamboman/mason-lspconfig.nvim",
-    -- opts = {
-    --   ensure_installed = {
-    --     "lua_ls",
-    --     --[["tsserver",]]
-    --     "cssls",
-    --     "tailwindcss",
-    --     "html",
-    --     "jedi_language_server",
-    --     "vimls",
-    --     "clangd",
-    --     "arduino_language_server",
-    --   },
-    -- },
   },
 
   {
@@ -136,8 +123,8 @@ return {
       table.insert(runtime_path, "lua/?/init.lua")
 
       -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+      -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       -- require("neodev").setup({})
       --Enable (broadcasting) snippet capability for completion
@@ -149,11 +136,11 @@ return {
         -- cpptools = {},
         rust_analyzer = {},
         -- jedi_language_server = {},
-        pyright = {},
+        -- pyright = {},
         tsserver = {},
         kotlin_language_server = {},
         -- eslint = {},
-        tailwindcss = {},
+        -- tailwindcss = {},
         cssls = {},
         cssmodules_ls = {},
         vimls = {},
@@ -177,10 +164,11 @@ return {
       }
 
       local mason_lspconfig = require("mason-lspconfig")
-      mason_lspconfig.setup({
-        ensure_installed = vim.tbl_keys(servers),
-      })
+      -- mason_lspconfig.setup({
+      --   ensure_installed = vim.tbl_keys(servers),
+      -- })
 
+      --TODO: Look at setup_handlers more
       mason_lspconfig.setup_handlers({
         function(server_name)
           require("lspconfig")[server_name].setup({
@@ -189,6 +177,8 @@ return {
             settings = servers[server_name],
             filetypes = (servers[server_name] or {}).filetypes,
           })
+          -- print("LSP: " .. server_name .. " setup")
+          -- print(vim.inspect(mason_lspconfig.get_installed_servers()))
         end,
       })
 
@@ -298,7 +288,8 @@ return {
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "buffer" },
-          { name = "nvim_lua" },
+          { name = "path"},
+          -- { name = "nvim_lua" },
           -- { name = "copilot" },
         },
       })

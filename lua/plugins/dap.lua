@@ -11,7 +11,7 @@ return {
     "mfussenegger/nvim-dap-python", -- Python
   },
   config = function()
-    -- local dap = require('dap')
+    local dap = require('dap')
     -- dap.configurations.python = {
     --   {
     --     -- The first three options are required by nvim-dap
@@ -41,9 +41,108 @@ return {
     --     end
     --   }
     -- }
-    require("dap-python").setup("~/.config/nvim/debug-adapters/debugpy/bin/python")
-    require("dapui").setup()
 
+    -- require("dap").adapters["pwa-node"] = {
+    --   type = "server",
+    --   host = "localhost",
+    --   port = "5032",
+    --   executable = {
+    --     command = "node",
+    --     -- 💀 Make sure to update this path to point to your installation
+    --     args = { "/home/casper/.local/share/nvim/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js", "${port}" },
+    --     -- args = { "~/.local/share/nvim/mason/packages/js-debug-adapter/, "${port}" },
+    --   },
+    -- }
+    --
+    -- require("dap").configurations.javascript = {
+    --   {
+    --     type = "pwa-node",
+    --     request = "launch",
+    --     name = "Launch file",
+    --     program = "${file}",
+    --     cwd = "${workspaceFolder}",
+    --   },
+    -- }
+
+    require("dap-python").setup(vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python")
+
+    dap.adapters.bashdb = {
+      type = "executable",
+      command = vim.fn.stdpath("data") .. "/mason/packages/bash-debug-adapter/bash-debug-adapter",
+      name = "bashdb",
+    }
+    dap.configurations.sh = {
+      {
+        type = "bashdb",
+        request = "launch",
+        name = "Launch file",
+        showDebugOutput = true,
+        pathBashdb = vim.fn.stdpath("data") .. "/mason/packages/bash-debug-adapter/extension/bashdb_dir/bashdb",
+        pathBashdbLib = vim.fn.stdpath("data") .. "/mason/packages/bash-debug-adapter/extension/bashdb_dir",
+        trace = true,
+        file = "${file}",
+        program = "${file}",
+        cwd = "${workspaceFolder}",
+        pathCat = "cat",
+        pathBash = "/bin/bash",
+        pathMkfifo = "mkfifo",
+        pathPkill = "pkill",
+        args = {},
+        env = {},
+        terminalKind = "integrated",
+      },
+    }
+
+    -- dap.adapters.lldb = {
+    --   type = "executable",
+    --   -- command = "/usr/bin/lldb-vscode", -- adjust as needed, must be absolute path
+    --   command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb", -- adjust as needed, must be absolute path
+    --   name = "lldb",
+    -- }
+
+    dap.adapters.codelldb = {
+      type = "server",
+      port = "${port}",
+      executable = {
+        -- CHANGE THIS to your path!
+        command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb",
+        args = { "--port", "${port}" },
+
+        -- On windows you may have to uncomment this:
+        -- detached = false,
+      },
+    }
+
+    dap.configurations.cpp = {
+      {
+        name = "Launch",
+        type = "codelldb",
+        request = "launch",
+        program = function()
+          return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+        end,
+        cwd = "${workspaceFolder}",
+        stopOnEntry = false,
+        args = {},
+
+        -- 💀
+        -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+        --
+        --    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+        --
+        -- Otherwise you might get the following error:
+        --
+        --    Error on launch: Failed to attach to the target process
+        --
+        -- But you should be aware of the implications:
+        -- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+        -- runInTerminal = false,
+      },
+    }
+    dap.configurations.c = dap.configurations.cpp
+    dap.configurations.rust = dap.configurations.cpp
+
+    require("dapui").setup()
     -- local dap = require"dap"
     -- dap.configurations.lua = {
     --   {

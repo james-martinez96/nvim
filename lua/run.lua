@@ -100,8 +100,8 @@ local function run_script()
   if filename == nil then
     print("No file found (buffer is unsaved or unnamed)")
     return
-  elseif file_extension == "txt" then
-    print("this is a text file")
+  elseif not file_types[file_extension] then
+    print("This filetype is not supported yet.")
   end
 
   if file_types[file_extension] then
