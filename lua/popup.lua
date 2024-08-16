@@ -39,9 +39,13 @@ end
 ---@param buf_name string
 function M.create_split(data, buf_name)
   local buf = vim.fn.bufadd(buf_name)
-  vim.api.nvim_buf_set_option(buf, 'buftype', 'nofile')  -- Set buftype to 'nofile' to indicate it's not associated with a file
-  vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')  -- Set bufhidden to 'wipe' to automatically close the buffer when it's no longer visible
-  vim.api.nvim_buf_set_option(buf, 'swapfile', false) -- Set swapfile to false
+  local opts = {
+    buf = buf
+  }
+
+  vim.api.nvim_set_option_value('buftype', 'nofile', opts )  -- Set buftype to 'nofile' to indicate it's not associated with a file
+  vim.api.nvim_set_option_value('bufhidden', 'wipe', opts )  -- Set bufhidden to 'wipe' to automatically close the buffer when it's no longer visible
+  vim.api.nvim_set_option_value('swapfile', false, opts) -- Set swapfile to false
 
   -- local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
   -- print('lines:',vim.tbl_flatten(lines))
