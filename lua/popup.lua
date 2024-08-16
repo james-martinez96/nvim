@@ -23,7 +23,7 @@ function M.create_popup(data)
   -- Set the content of the popup window
   vim.api.nvim_buf_set_lines(popup_bufnr, 0, -1, false, data)
 
-  -- Close the popup window when a key is pressed
+  -- Close the popup window when esc key is pressed
   vim.api.nvim_buf_set_keymap(
     popup_bufnr,
     "n",

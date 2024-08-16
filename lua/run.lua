@@ -8,9 +8,15 @@ package.loaded["popup"] = nil
 -- error handling
 -- remove comments
 -- make this a plugin
+-- get filetypes with vim.filetype.match()
 
-local popup = require("popup")
 local log = require("log")
+
+local ok, popup = pcall(require, "popup")
+if not ok then
+  print("Error loading popup.lua")
+  log.error("")
+end
 
 local file_types = {
   sh = "bash",
