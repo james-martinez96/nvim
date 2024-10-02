@@ -22,9 +22,9 @@ end
 local function save_session()
   local cwd = vim.fn.getcwd()
   local filename = string.gsub(cwd, "/", "@")
-  print(filename)
+  -- print(filename)
   local session_file = session_path .. "" .. filename .. ".vim"
-  print(session_file)
+  -- print(session_file)
 
   if file_exists(session_path) then
     vim.cmd("mksession!" .. session_file)
