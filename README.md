@@ -8,6 +8,8 @@ which includes a set of plugins and keymaps.
 
 > use at your own risk.
 
+> may not work on windows.
+
 ## Structure
 
 The project is structured as follows:
