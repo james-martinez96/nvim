@@ -131,6 +131,7 @@ return {
       --cssls
       -- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+      -- FIX ME
       local servers = {
         clangd = {},
         -- cpptools = {},
@@ -169,6 +170,7 @@ return {
       -- })
 
       --TODO: Look at setup_handlers more
+      -- FIX ME
       mason_lspconfig.setup_handlers({
         function(server_name)
           require("lspconfig")[server_name].setup({

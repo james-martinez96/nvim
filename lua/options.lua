@@ -53,3 +53,14 @@ vim.wo.signcolumn = "yes"
 vim.opt.termguicolors = true
 
 vim.opt.scrolloff = 8
+
+-- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+--     vim.lsp.handlers.hover, {
+--         -- Set custom width and height for the hover window
+--         border = "rounded",  -- Optional: adds rounded borders to the window
+--         width = 100,          -- Set the width of the hover window
+--         height = 40,          -- Set the height of the hover window
+--         wrap = true,
+--         wrap_at = ""
+--     }
+-- )

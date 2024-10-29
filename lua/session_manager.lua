@@ -6,6 +6,7 @@ end
 
 local function load_session()
   local cwd = vim.fn.getcwd()
+  -- TODO: change "@" to "%" to be more consistent
   local filename = string.gsub(cwd, "/", "@")
   local session_file = session_path .. "" .. filename .. ".vim"
 
@@ -32,6 +33,13 @@ local function save_session()
     vim.fn.mkdir(session_path)
   end
 end
+
+-- vim.api.nvim_create_autocmd({"BufEnter", "WinEnter"}, {
+--   pattern = {"*.lua"},
+--   callback = function ()
+--     load_session()
+--   end
+-- })
 
 vim.api.nvim_create_user_command("SaveSession", function()
   save_session()
