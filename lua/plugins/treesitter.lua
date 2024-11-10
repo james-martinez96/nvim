@@ -18,6 +18,7 @@ return {
         "vimdoc",
         "vim",
         "bash",
+        -- not sure if still works
         "gdscript",
         "godot_resource",
         "gdshader",

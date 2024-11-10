@@ -132,7 +132,9 @@ return {
       -- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
       -- FIX ME
+      -- does nothing
       local servers = {
+        gdtoolkit = {},
         clangd = {},
         -- cpptools = {},
         rust_analyzer = {},
@@ -184,7 +186,7 @@ return {
         end,
       })
 
-      require("lspconfig").gdscript.setup(capabilities)
+      -- require("lspconfig").gdscript.setup(capabilities)
 
       -- require("typescript-tools").setup({
       --   on_attach = on_attach,
