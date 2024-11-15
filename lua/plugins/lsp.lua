@@ -173,6 +173,7 @@ return {
 
       --TODO: Look at setup_handlers more
       -- FIX ME
+      -- does everything
       mason_lspconfig.setup_handlers({
         function(server_name)
           require("lspconfig")[server_name].setup({
