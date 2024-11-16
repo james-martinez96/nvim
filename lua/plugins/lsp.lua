@@ -47,7 +47,7 @@ return {
           require("none-ls.formatting.eslint_d"),
           require("none-ls.code_actions.eslint_d"),
           -- require("none-ls.builtins.formatting.prettier"),
-          -- require("none-ls.builtins.formatting.eslint"),
+          -- require("none-ls.builtins.formatting.eslint_d"),
           -- require("none-ls.builtins.code_actions.refactor"),
         },
       })
