@@ -131,8 +131,6 @@ return {
       --cssls
       -- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-      -- FIX ME
-      -- does nothing
       local servers = {
         gdtoolkit = {},
         clangd = {},
@@ -172,8 +170,6 @@ return {
       -- })
 
       --TODO: Look at setup_handlers more
-      -- FIX ME
-      -- does everything
       mason_lspconfig.setup_handlers({
         function(server_name)
           require("lspconfig")[server_name].setup({
