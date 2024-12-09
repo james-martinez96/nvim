@@ -43,6 +43,7 @@ return {
       null_ls.setup({
         sources = {
           null_ls.builtins.formatting.stylua,
+          null_ls.builtins.formatting.black,
           -- null_ls.builtins.formatting.prettierd,
           require("none-ls.formatting.eslint_d"),
           require("none-ls.code_actions.eslint_d"),
@@ -131,7 +132,7 @@ return {
       --cssls
       -- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-      local servers = {
+      local lsp_servers = {
         gdtoolkit = {},
         clangd = {},
         -- cpptools = {},
@@ -175,8 +176,8 @@ return {
           require("lspconfig")[server_name].setup({
             capabilities = capabilities,
             on_attach = on_attach,
-            settings = servers[server_name],
-            filetypes = (servers[server_name] or {}).filetypes,
+            settings = lsp_servers[server_name],
+            filetypes = (lsp_servers[server_name] or {}).filetypes,
           })
           -- print("LSP: " .. server_name .. " setup")
           -- print(vim.inspect(mason_lspconfig.get_installed_servers()))
