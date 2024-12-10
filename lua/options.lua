@@ -15,10 +15,10 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 8
 
 --Set softtabstop
-vim.opt.softtabstop = 2
+vim.opt.softtabstop = 4
 
 --Set shiftwidth
-vim.opt.shiftwidth = 2
+vim.opt.shiftwidth = 4
 
 --Set smartindent
 vim.opt.smartindent = true
@@ -52,7 +52,7 @@ vim.wo.signcolumn = "yes"
 
 vim.opt.termguicolors = true
 
-vim.opt.scrolloff = 8
+vim.opt.scrolloff = 4
 
 -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
 --     vim.lsp.handlers.hover, {
