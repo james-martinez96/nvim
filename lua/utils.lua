@@ -83,3 +83,12 @@ local function source_utils()
   vim.api.nvim_command("source $HOME/.config/nvim/lua/run.lua")
 end
 vim.api.nvim_create_user_command("SourceUtils", source_utils, {})
+
+-- Open terminal with some settings
+vim.api.nvim_create_autocmd('TermOpen', {
+  group = vim.api.nvim_create_augroup('custom-term-open', {clear = true}),
+  callback = function()
+    vim.opt.number = false
+    vim.opt.relativenumber = false
+  end,
+})
