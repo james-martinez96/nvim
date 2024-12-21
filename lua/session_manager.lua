@@ -1,36 +1,46 @@
 local session_path = vim.fn.stdpath("state") .. "/sessions/session_manager/"
+local cwd = vim.fn.getcwd()
 
+-- check to see if session_manager directory exists.
+local function verify_path(path)
+  if vim.fn.isdirectory(path) == 1 then
+    return true
+  else
+    vim.fn.mkdir(path)
+    return false
+  end
+end
+print("session folder exists:", verify_path(session_path))
+
+-- check to see if session file exists.
 local function file_exists(path)
+  vim.fn.filereadable(path)
   return vim.fn.isdirectory(path) == 1
 end
 
+-- Load a session.
 local function load_session()
-  local cwd = vim.fn.getcwd()
   -- TODO: change "@" to "%" to be more consistent
-  local filename = string.gsub(cwd, "/", "@")
-  local session_file = session_path .. "" .. filename .. ".vim"
+  local filename = cwd:gsub("/", "@")
+  local session_file = string.format("%s%s.vim", session_path, filename)
 
   if file_exists(session_path) then
-    -- vim.cmd('mksession!' .. session_file)
     vim.cmd("source" .. session_file)
-    -- print(session_file)
   else
-    print("session not found")
+    print("Session not found: " .. session_file)
     return
   end
 end
 
+-- Save a session.
 local function save_session()
-  local cwd = vim.fn.getcwd()
-  local filename = string.gsub(cwd, "/", "@")
-  -- print(filename)
+  local filename = cwd:gsub("/", "@")
   local session_file = session_path .. "" .. filename .. ".vim"
-  -- print(session_file)
 
   if file_exists(session_path) then
     vim.cmd("mksession!" .. session_file)
   else
-    vim.fn.mkdir(session_path)
+    print("No session file found.")
   end
 end
 
