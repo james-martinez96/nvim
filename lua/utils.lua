@@ -92,3 +92,9 @@ vim.api.nvim_create_autocmd('TermOpen', {
     vim.opt.relativenumber = false
   end,
 })
+
+-- Love2d
+local function love2d()
+  vim.cmd("!love ./src", {})
+end
+vim.api.nvim_create_user_command("Love", love2d, {})
