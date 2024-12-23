@@ -108,8 +108,6 @@ vim.keymap.set("n", "<leader>example", function ()
   vim.fn.chansend(job_id, {"echo 'hi'\r\n"})
 end)
 
--- small terminal
-
 -- Love2d
 local function love2d()
   vim.cmd("!love ./src", {})
