@@ -12,6 +12,10 @@ return {
   },
   config = function()
     local dap = require('dap')
+    require("dapui").setup()
+    require("nvim-dap-virtual-text").setup()
+    require("telescope").load_extension("dap")
+
     -- dap.configurations.python = {
     --   {
     --     -- The first three options are required by nvim-dap
@@ -142,7 +146,6 @@ return {
     dap.configurations.c = dap.configurations.cpp
     dap.configurations.rust = dap.configurations.cpp
 
-    require("dapui").setup()
     -- local dap = require"dap"
     -- dap.configurations.lua = {
     --   {
