@@ -12,10 +12,36 @@ return {
   },
   config = function()
     local dap = require('dap')
-    require("dapui").setup()
+    local dapui = require("dapui")
+    dapui.setup()
     require("nvim-dap-virtual-text").setup()
     require("telescope").load_extension("dap")
 
+    vim.keymap.set("n", "<leader>duo", dapui.open, { desc = "open dap ui" })
+    vim.keymap.set("n", "<leader>duc", dapui.close, { desc = "close dap ui" })
+    vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Dap breakpoint" })
+    vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Dap continue" })
+    vim.keymap.set("n", "<leader>dsi", dap.step_into, { desc = "Dap step into" })
+    vim.keymap.set("n", "<leader>dso", dap.step_over, { desc = "Dap step over" })
+    vim.keymap.set("n", "<leader>dsO", dap.step_out, { desc = "Dap step out" })
+    vim.keymap.set("n", "<leader>dsb", dap.step_back, { desc = "Dap step back" })
+    vim.keymap.set("n", "<leader>dr", dap.restart, { desc = "Dap restart" })
+    vim.keymap.set("n", "<leader>dt", dap.terminate, { desc = "Dap terminate" })
+
+    vim.keymap.set("n", "<leader>drc", dap.run_to_cursor, { desc = "Dap run to cursor" })
+
+    dap.listeners.before.attach.dapui_config = function()
+      dapui.open()
+    end
+    dap.listeners.before.launch.dapui_config = function()
+      dapui.open()
+    end
+    dap.listeners.before.event_terminated.dapui_config = function()
+      dapui.close()
+    end
+    dap.listeners.before.event_exited.dapui_config = function()
+      dapui.close()
+    end
     -- dap.configurations.python = {
     --   {
     --     -- The first three options are required by nvim-dap
