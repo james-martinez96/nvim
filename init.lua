@@ -18,5 +18,6 @@ require("options")
 require("utils")
 require("session_manager")
 require("run")
+require("float")
 require("lazy").setup("plugins")
 
