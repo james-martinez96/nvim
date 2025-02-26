@@ -17,7 +17,7 @@ vim.keymap.set("i", "jj", "<ESC>", opts)
 
 -- Terminal
 vim.keymap.set("t", "jj", "<C-\\><C-n>", opts)
-vim.keymap.set("n", "<leader>t", [[:term<CR>]], opts)
+-- vim.keymap.set("n", "<leader>t", [[:term<CR>]], opts)
 vim.keymap.set("n", "<leader>vt", [[:vs +term<CR>]], opts)
 -- vim.keymap.set('n', '<leader>ht', [[:sp +term<CR>]], opts)
 
