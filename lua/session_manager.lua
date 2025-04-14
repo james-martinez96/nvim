@@ -6,11 +6,23 @@ local function verify_path(path)
   if vim.fn.isdirectory(path) == 1 then
     return true
   else
-    vim.fn.mkdir(path)
     return false
   end
 end
-print("session folder exists:", verify_path(session_path))
+
+-- create the session manager directory
+-- print("session folder exists:", verify_path(session_path))
+if verify_path(session_path) == false then
+  local input = vim.fn.input("Session directory does not exist. Create it? (y/n): ")
+  if input:lower() == "y" then
+    print("\n")
+    vim.fn.mkdir(session_path)
+    print("Directory created: " .. session_path)
+  elseif input:lower() == "n" then
+    print("\n")
+    print("Directory not created.")
+  end
+end
 
 -- check to see if session file exists.
 local function file_exists(path)
