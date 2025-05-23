@@ -2,7 +2,19 @@ return {
   -- { "christoomey/vim-tmux-navigator" },
   { "windwp/nvim-autopairs", opts = {} },
   { "j-hui/fidget.nvim", opts = {} },
-  { "numToStr/Comment.nvim", opts = {} },
+  -- {
+  --   "JoosepAlviste/nvim-ts-context-commentstring",
+  --   opts = {
+  --     enable_autocmd = false,
+  --   },
+  -- },
+  {
+    "numToStr/Comment.nvim",
+    opts = {},
+    -- JSX support
+    -- dependencies = {"JoosepAlviste/nvim-ts-context-commentstring"},
+    -- opts = { pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook() },
+  },
   { "folke/which-key.nvim", opts = {} },
   { "mbbill/undotree" },
   { "tpope/vim-fugitive" },
@@ -21,5 +33,13 @@ return {
   --     -- scope = { exclude = { language = { "lua" } } },
   --   },
   -- },
-  { dir = "~/.config/nvim/test_plugin.nvim" }
+  { dir = "~/.config/nvim/test_plugin.nvim" },
+
+  -- {
+  --   dir = "/mnt/usb/nvim_plugins/present.nvim",
+  --
+  --   config = function ()
+  --     require("present").setup()
+  --   end
+  -- },
 }
