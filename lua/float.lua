@@ -49,4 +49,4 @@ local toggle_termianl = function ()
 end
 
 vim.api.nvim_create_user_command("Fterm", toggle_termianl, {})
-vim.keymap.set({"n", "t"}, "<leader>t", toggle_termianl)
+vim.keymap.set({"n", "t"}, "<leader>.", toggle_termianl)
