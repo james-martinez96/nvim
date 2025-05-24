@@ -16,7 +16,7 @@ if verify_path(session_path) == false then
   local input = vim.fn.input("Session directory does not exist. Create it? (y/n): ")
   if input:lower() == "y" then
     print("\n")
-    vim.fn.mkdir(session_path)
+    vim.fn.mkdir(session_path, "p")
     print("Directory created: " .. session_path)
   elseif input:lower() == "n" then
     print("\n")
