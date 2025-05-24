@@ -6,12 +6,12 @@
 -- end
 
 -- auto reloading lua files
-vim.api.nvim_create_autocmd("BufWritePost", {
-  pattern = vim.fn.expand("~") .. ".config/nvim/*.lua" ,
-  callback = function()
-    vim.cmd("so %")
-  end,
-})
+-- vim.api.nvim_create_autocmd("BufWritePost", {
+--   pattern = vim.fn.expand("~") .. ".config/nvim/*.lua" ,
+--   callback = function()
+--     vim.cmd("so %")
+--   end,
+-- })
 
 -- auto resizez splits
 -- local auto_resize_group = vim.api.nvim_create_augroup("AutoResize", { clear = true })
