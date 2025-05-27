@@ -31,5 +31,10 @@ require("session_manager")
 require("run")
 require("float")
 require("texwatch").setup()
-require("lazy").setup("plugins")
+require("new-lsp")
+require("lazy").setup({
+  spec = {
+    { import = "plugins"}
+  }
+})
 
