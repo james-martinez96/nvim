@@ -114,3 +114,11 @@ local function love2d()
   vim.cmd("!love ./src", {})
 end
 vim.api.nvim_create_user_command("Love", love2d, {})
+
+-- This leaves trailing whitespace
+function RemoveInlineBlockComment()
+    local line = vim.api.nvim_get_current_line()
+    local uncommented = line:gsub("/%*.-%*/", "")
+    vim.api.nvim_set_current_line(uncommented)
+end
+vim.keymap.set('n', '<leader>rc', RemoveInlineBlockComment, {noremap = true, silent = true})
