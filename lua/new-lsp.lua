@@ -1,6 +1,7 @@
 -- PATH for these are being set by "williamboman/mason.nvim"
 
 local lsp_servers = {
+  stylua = {},
   bashls = {},
   -- eslint = {},
   -- jdtls = {},
@@ -10,9 +11,36 @@ local lsp_servers = {
   rust_analyzer = {},
   jedi_language_server = {},
   pyright = {},
-  ts_ls = {},
+  ts_ls = {
+    -- Note: typescript-tools.nvim will handle TypeScript if you're using it
+    -- You might want to disable this if using typescript-tools
+    settings = {
+      typescript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "all",
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
+      },
+      javascript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "all",
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
+      },
+    },
+  },
   kotlin_language_server = {},
-  -- eslint = {},
+  eslint = {},
   -- tailwindcss = {},
   cssls = {},
   cssmodules_ls = {},
@@ -50,16 +78,16 @@ local lsp_servers = {
   },
 }
 
---[[New Way]]
--- local capabilities = require("cmp_nvim_lsp").default_capabilities()
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
---vim.print(capabilities)
--- vim.lsp.config("*", {
-  -- capabilities = capabilities,
--- })
+-- Get capabilities from nvim-cmp
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+local has_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
+if has_cmp then
+  capabilities = cmp_lsp.default_capabilities(capabilities)
+end
 
-for name, cfg in pairs(lsp_servers) do
-  vim.lsp.config(name, cfg)
+for name, config in pairs(lsp_servers) do
+  config.capabilities = capabilities
+  vim.lsp.config(name, config)
   -- vim.print(name, cfg)
 end
 vim.lsp.enable(vim.tbl_keys(lsp_servers))
@@ -72,12 +100,48 @@ vim.lsp.enable(vim.tbl_keys(lsp_servers))
 --   end
 -- })
 
+-- Configure diagnostics
+vim.diagnostic.config({
+  virtual_text = {
+    -- prefix = "●",
+    source = "if_many",
+  },
+  -- signs = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '󰅚',
+      [vim.diagnostic.severity.WARN] = '󰀪',
+      [vim.diagnostic.severity.HINT] = '󰌶',
+      [vim.diagnostic.severity.INFO] = '󰋽',
+    },
+    linehl = {
+      -- [vim.diagnostic.severity.ERROR] = 'DiagnosticSign',
+    },
+    numhl = {
+      -- [vim.diagnostic.severity.WARN] = 'DiagnosticSign',
+    }
+  },
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    focusable = false,
+    style = "minimal",
+    border = "rounded",
+    source = "if_many",
+    header = "",
+    prefix = "",
+  },
+})
+
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('my.lsp', {}),
   callback = function(args)
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+    -- print(client:supports_method('textDocument/implementation'))
+
     if client:supports_method('textDocument/implementation') then
-      -- Create a keymap for vim.lsp.buf.implementation ...
+        -- Create a keymap for vim.lsp.buf.implementation ...
         local opts = { noremap = true, silent = true }
         vim.keymap.set( "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
         vim.keymap.set( "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
@@ -99,93 +163,80 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format()' ]])
     end
 
-      vim.diagnostic.config({
-              virtual_text = true,
-              signs = true,
-              update_in_insert = false,
-              float = {
-                  focusable = false,
-                  style = "minimal",
-                  border = "rounded",
-                  source = "if_many",
-                  header = "",
-                  prefix = "",
-              },
-          })
     -- Enable auto-completion. Note: Use CTRL-Y to select an item. |complete_CTRL-Y|
-    if client:supports_method('textDocument/completion') then
+    -- if client:supports_method('textDocument/completion') then
       -- Optional: trigger autocompletion on EVERY keypress. May be slow!
       -- local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
       -- client.server_capabilities.completionProvider.triggerCharacters = chars
 
       -- vim.lsp.completion.enable(true, client.id, args.buf, {autotrigger = true})
 
-      local cmp = require("cmp")
-      local luasnip = require("luasnip")
-      require("luasnip.loaders.from_vscode").lazy_load()
-      -- cmp.setup.cmdline(':', {
-      --   mapping = cmp.mapping.preset.cmdline(),
-      --   sources = cmp.config.sources({
-      --     {name='path'},
-      --   })
+      -- local cmp = require("cmp")
+      -- local luasnip = require("luasnip")
+      -- require("luasnip.loaders.from_vscode").lazy_load()
+      -- -- cmp.setup.cmdline(':', {
+      -- --   mapping = cmp.mapping.preset.cmdline(),
+      -- --   sources = cmp.config.sources({
+      -- --     {name='path'},
+      -- --   })
+      -- -- })
+      -- luasnip.config.setup({})
+      -- cmp.setup({
+      --   snippet = {
+      --     expand = function(args)
+      --       luasnip.lsp_expand(args.body)
+      --     end,
+      --   },
+      --   completion = {
+      --     completeopt = "menu,menuone,noinsert",
+      --   },
+      --   mapping = cmp.mapping.preset.insert({
+      --     ["<C-p>"] = cmp.mapping.select_prev_item(),
+      --     ["<C-n>"] = cmp.mapping.select_next_item(),
+      --     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+      --     ["<C-f>"] = cmp.mapping.scroll_docs(4),
+      --     ["<C-Space>"] = cmp.mapping.complete(),
+      --     ["<C-e>"] = cmp.mapping.close(),
+      --     ["<CR>"] = cmp.mapping.confirm({
+      --       behavior = cmp.ConfirmBehavior.Replace,
+      --       select = true,
+      --     }),
+      --     ["<Tab>"] = cmp.mapping(function(fallback)
+      --       if cmp.visible() then
+      --         cmp.select_next_item()
+      --       elseif luasnip.expand_or_locally_jumpable() then
+      --         luasnip.expand_or_jump()
+      --       else
+      --         fallback()
+      --       end
+      --     end, { "i", "s" }),
+      --     ["<S-Tab>"] = cmp.mapping(function(fallback)
+      --       if cmp.visible() then
+      --         cmp.select_prev_item()
+      --       elseif luasnip.locally_jumpable(-1) then
+      --         luasnip.jump(-1)
+      --       else
+      --         fallback()
+      --       end
+      --     end, { "i", "s" }),
+      --   }),
+      --   -- the order of sources matter (by default). That gives the priority
+      --   -- you can confugure:
+      --   --    keyword_length
+      --   --    priority
+      --   --    max_item_count
+      --   --    (more)
+      --   sources = {
+      --     { name = "nvim_lsp" },
+      --     { name = "luasnip" },
+      --     { name = "buffer" },
+      --     { name = "path"},
+      --     -- { name = "nvim_lua" },
+      --     -- { name = "copilot" },
+      --   },
       -- })
-      luasnip.config.setup({})
-      cmp.setup({
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
-        completion = {
-          completeopt = "menu,menuone,noinsert",
-        },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-p>"] = cmp.mapping.select_prev_item(),
-          ["<C-n>"] = cmp.mapping.select_next_item(),
-          ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.close(),
-          ["<CR>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-          }),
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif luasnip.locally_jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-        }),
-        -- the order of sources matter (by default). That gives the priority
-        -- you can confugure:
-        --    keyword_length
-        --    priority
-        --    max_item_count
-        --    (more)
-        sources = {
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "buffer" },
-          { name = "path"},
-          -- { name = "nvim_lua" },
-          -- { name = "copilot" },
-        },
-      })
 
-    end
+    -- end
 
     -- Auto-format ("lint") on save.
     -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
