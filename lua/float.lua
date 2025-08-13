@@ -30,6 +30,8 @@ local function create_floating_window(opts)
     row = row,
     style = "minimal",
     border = "rounded", -- You can change this to "single", "double", etc.
+    -- title = "Terminal",
+    -- title_pos = "center",
   }
 
   local win = vim.api.nvim_open_win(buf, true, win_config)
@@ -76,4 +78,4 @@ local toggle_terminal = function ()
 end
 
 vim.api.nvim_create_user_command("Fterm", toggle_terminal, {})
-vim.keymap.set({"n", "t"}, "<leader>.", toggle_terminal)
+vim.keymap.set({"n", "t"}, "<F2>", toggle_terminal)
