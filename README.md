@@ -24,10 +24,12 @@ The project is structured as follows:
     - `gitsigns.lua`: Gitsigns is a plugin for Neovim that provides integration with Git.
     - `init.lua`: contains more plugins using there default configuration.
     - `lsp.lua`: configuration for Neovim's language server protocol.
+    - `completion.lua`: configuration for auto completion.
     - `lualine.lua`: better looking status line using lualine.nvim.
     - `neo-tree.lua`: displays a tree structures for browsing the filesystem.
     - `telescope.lua`: a configuration for Telescope.nvim for fuzzy finding.
     - `treesitter.lua`: configuration for nvim-treesitter.
+    - `float.lua`: a floating floating terminal.
   - `keymaps.lua`: keymaps.
   - `options.lua`: options for neovim.
   - `utils.lua`: basic utility functions.
