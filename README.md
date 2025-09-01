@@ -44,3 +44,4 @@ To set up this configuration, clone the repository and copy the configuration fi
 ```sh
 git clone https://github.com/james-martinez96/nvim.git
 cp -r nvim ~/.config/nvim
+```
