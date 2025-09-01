@@ -56,13 +56,6 @@ local function save_session()
   end
 end
 
--- vim.api.nvim_create_autocmd({"BufEnter", "WinEnter"}, {
---   pattern = {"*.lua"},
---   callback = function ()
---     load_session()
---   end
--- })
-
 vim.api.nvim_create_user_command("SaveSession", function()
   save_session()
 end, {})
