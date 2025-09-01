@@ -122,3 +122,6 @@ function RemoveInlineBlockComment()
     vim.api.nvim_set_current_line(uncommented)
 end
 vim.keymap.set('n', '<leader>rc', RemoveInlineBlockComment, {noremap = true, silent = true})
+
+-- Run Tests for the current file
+vim.keymap.set("n", "<space>tf", "<cmd>PlenaryBustedFile %<CR>")
