@@ -1,8 +1,30 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  branch = "main",
   dependencies = { "nvim-treesitter/nvim-treesitter-textobjects", run = ":TSUpdate" },
   build = ":TSUpdate",
   config = vim.defer_fn(function()
+
+    -- -- Register local duckyscript parser
+    -- local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+    -- parser_config.duckyscript = {
+    --   install_info = {
+    --     url = "/mnt/usb/flipper/duckyscript/tree-sitter-duckyscript", -- path to your grammar
+    --     files = { "src/parser.c" },
+    --     branch = "main",
+    --   },
+    --   filetype = "duckyscript",
+    -- }
+    --
+    -- -- Filetype detection for .duck/.ds files
+    -- vim.filetype.add({
+    --   extension = {
+    --     duckyscript = "duckyscript",
+    --     duck = "duckyscript",
+    --     ds = "duckyscript",
+    --   },
+    -- })
+
     require("nvim-treesitter.configs").setup({
       -- Add languages to be installed here that you want installed for treesitter
       ensure_installed = {
@@ -22,6 +44,7 @@ return {
         "gdscript",
         "godot_resource",
         "gdshader",
+        -- "duckyscript"
       },
 
       -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -33,7 +56,10 @@ return {
       -- You can specify additional Treesitter modules here: -- For example: -- playground = {--enable = true,-- },
       modules = {},
       highlight = { enable = true },
-      indent = { enable = true },
+      -- indent = {
+      --   enable = true,
+      --   duckyscript = false,
+      -- },
       incremental_selection = {
         enable = true,
         keymaps = {

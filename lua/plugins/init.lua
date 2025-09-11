@@ -35,11 +35,11 @@ return {
   -- },
   { dir = "~/.config/nvim/test_plugin.nvim" },
 
-  -- {
-  --   dir = "/mnt/usb/nvim_plugins/present.nvim",
-  --
-  --   config = function ()
-  --     require("present").setup()
-  --   end
-  -- },
+  { -- dir = "/mnt/usb/nvim_plugins/present.nvim",
+    {"james-martinez96/present.nvim"}
+
+    -- config = function ()
+    --   require("present").setup()
+    -- end
+  },
 }

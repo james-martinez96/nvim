@@ -1,11 +1,16 @@
 -- PATH for these are being set by "williamboman/mason.nvim"
 
 local lsp_servers = {
-  stylua = {},
+  -- ducky = {
+  --   cmd = {"python", "/mnt/usb/flipper/duckyscript/ducky_lsp.py"},
+  --   filetypes = {"duckyscript"},
+  --   root_dir = vim.fn.getcwd(),
+  -- },
+  -- stylua = {}, -- need to setup
   bashls = {},
   -- eslint = {},
   -- jdtls = {},
-  gdtoolkit = {},
+  -- gdtoolkit = {}, -- need to setup
   clangd = {},
   -- cpptools = {},
   rust_analyzer = {},
