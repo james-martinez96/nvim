@@ -81,6 +81,7 @@ local lsp_servers = {
       },
     },
   },
+  -- copilot = {}
 }
 
 -- Get capabilities from nvim-cmp
