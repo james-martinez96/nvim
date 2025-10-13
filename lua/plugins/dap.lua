@@ -14,7 +14,7 @@ return {
     local dap = require('dap')
     local dapui = require("dapui")
     dapui.setup()
-    require("nvim-dap-virtual-text").setup()
+    require("nvim-dap-virtual-text").setup({})
     require("telescope").load_extension("dap")
 
     vim.keymap.set("n", "<leader>duo", dapui.open, { desc = "open dap ui" })
@@ -170,7 +170,7 @@ return {
       },
     }
     dap.configurations.c = dap.configurations.cpp
-    dap.configurations.rust = dap.configurations.cpp
+    -- dap.configurations.rust = dap.configurations.cpp
 
     -- local dap = require"dap"
     -- dap.configurations.lua = {
@@ -186,5 +186,36 @@ return {
     -- dap.adapters.nlua = function(callback, config)
     --   callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
     -- end
+
+    -- dap.configurations.lua = {
+    --   type = "lua-local",
+    --   request = "launch",
+    --   name = "Debug",
+    --   program = {
+    --     command = "lua5.4",
+    --     file = "main.lua",
+    --   }
+    -- }
+
+    -- dap.adapters["local-lua"] = {
+    --   type = "executable",
+    --   command = "node",
+    --   args = {
+    --     vim.fn.stdpath("data") .. "/mason/packages/local-lua-debugger-vscode/extension/debugAdapter.js",
+    --   },
+    -- }
+    --
+    -- dap.configurations.lua = {
+    --   {
+    --     name = "Debug current file",
+    --     type = "local-lua",
+    --     request = "launch",
+    --     program = function()
+    --       return vim.fn.input('Path to file: ', vim.fn.expand('%'), 'file')
+    --     end,
+    --     cwd = "${workspaceFolder}",
+    --     stopOnEntry = true,
+    --   },
+    -- }
   end,
 }
