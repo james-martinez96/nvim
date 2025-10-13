@@ -34,8 +34,7 @@ return {
   --   "williamboman/mason-lspconfig.nvim",
   -- },
   {
-    -- TODO:
-    -- remove lspconfig
+    -- TODO: remove nvim-lspconfig
     -- not all language servers are not supported yet.
     -- This is just setting default configs for language servers
     -- and loading "hrsh7th/cmp-nvim-lsp".

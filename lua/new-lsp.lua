@@ -1,6 +1,7 @@
 -- PATH for these are being set by "williamboman/mason.nvim"
 
 local lsp_servers = {
+  -- LSP for duckyscript
   -- ducky = {
   --   cmd = {"python", "/mnt/usb/flipper/duckyscript/ducky_lsp.py"},
   --   filetypes = {"duckyscript"},
@@ -8,7 +9,6 @@ local lsp_servers = {
   -- },
   -- stylua = {}, -- need to setup
   bashls = {},
-  -- eslint = {},
   -- jdtls = {},
   -- gdtoolkit = {}, -- need to setup
   clangd = {},
@@ -51,14 +51,21 @@ local lsp_servers = {
   cssmodules_ls = {},
   vimls = {},
   texlab = {},
+  ltex_plus = {
+    settings = {
+      ltex = {
+        language = "en-AU"
+      }
+    }
+  },
   asm_lsp = {},
   arduino_language_server = {},
   html = {
     filetypes = { "html", "javascriptreact", "typescriptreact", "javascript" },
   },
   lua_ls = {
-  cmd = {"lua-language-server"},
-  filetypes = {"lua"},
+    cmd = {"lua-language-server"},
+    filetypes = {"lua"},
     settings = {
       Lua = {
         runtime = {
@@ -81,7 +88,8 @@ local lsp_servers = {
       },
     },
   },
-  -- copilot = {}
+  -- csharp_ls = {},
+  -- copilot = {},
 }
 
 -- Get capabilities from nvim-cmp
@@ -145,6 +153,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
     -- print(client:supports_method('textDocument/implementation'))
+    vim.keymap.set( "n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
 
     if client:supports_method('textDocument/implementation') then
         -- Create a keymap for vim.lsp.buf.implementation ...
@@ -164,7 +173,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set( "n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
         vim.keymap.set( "n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
         vim.keymap.set( "n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-        vim.keymap.set( "n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+        -- vim.keymap.set( "n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
         vim.keymap.set( "n", "<leader>so", [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
         vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format()' ]])
     end
