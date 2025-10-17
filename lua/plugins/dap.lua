@@ -1,3 +1,7 @@
+-- TODO:
+-- create a auto install for python-debugpy
+-- and virtual environment for debugpy
+
 -- Dap (Debug Adapter Protocol)
 return {
   "mfussenegger/nvim-dap",
