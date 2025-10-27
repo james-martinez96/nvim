@@ -33,45 +33,45 @@
 -- Yank Highlight
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function()
-    vim.hl.on_yank()
-  end,
-  group = highlight_group,
-  pattern = "*",
+    callback = function()
+        vim.hl.on_yank()
+    end,
+    group = highlight_group,
+    pattern = "*",
 })
 
 -- Telescope live_grep in git root
 -- Function to find the git root directory based on the current buffer's path
 local function find_git_root()
-  -- Use the current buffer's path as the starting point for the git search
-  local current_file = vim.api.nvim_buf_get_name(0)
-  local current_dir
-  local cwd = vim.fn.getcwd()
-  -- If the buffer is not associated with a file, return nil
-  if current_file == "" then
-    current_dir = cwd
-  else
-    -- Extract the directory from the current file's path
-    current_dir = vim.fn.fnamemodify(current_file, ":h")
-  end
+    -- Use the current buffer's path as the starting point for the git search
+    local current_file = vim.api.nvim_buf_get_name(0)
+    local current_dir
+    local cwd = vim.fn.getcwd()
+    -- If the buffer is not associated with a file, return nil
+    if current_file == "" then
+        current_dir = cwd
+    else
+        -- Extract the directory from the current file's path
+        current_dir = vim.fn.fnamemodify(current_file, ":h")
+    end
 
-  -- Find the Git root directory from the current file's path
-  local git_root = vim.fn.systemlist("git -C " .. vim.fn.escape(current_dir, " ") .. " rev-parse --show-toplevel")[1]
-  if vim.v.shell_error ~= 0 then
-    print("Not a git repository. Searching on current working directory")
-    return cwd
-  end
-  return git_root
+    -- Find the Git root directory from the current file's path
+    local git_root = vim.fn.systemlist("git -C " .. vim.fn.escape(current_dir, " ") .. " rev-parse --show-toplevel")[1]
+    if vim.v.shell_error ~= 0 then
+        print("Not a git repository. Searching on current working directory")
+        return cwd
+    end
+    return git_root
 end
 
 -- Custom live_grep function to search in git root
 local function live_grep_git_root()
-  local git_root = find_git_root()
-  if git_root then
-    require("telescope.builtin").live_grep({
-      search_dirs = { git_root },
-    })
-  end
+    local git_root = find_git_root()
+    if git_root then
+        require("telescope.builtin").live_grep({
+            search_dirs = { git_root },
+        })
+    end
 end
 
 vim.api.nvim_create_user_command("LiveGrepGitRoot", live_grep_git_root, {})
@@ -79,39 +79,39 @@ vim.keymap.set("n", "<leader>sG", ":LiveGrepGitRoot<cr>", { desc = "[S]earch by 
 
 -- Source init.lua
 local function source_utils()
-  vim.api.nvim_command("source $HOME/.config/nvim/lua/utils.lua")
-  vim.api.nvim_command("source $HOME/.config/nvim/lua/run.lua")
+    vim.api.nvim_command("source $HOME/.config/nvim/lua/utils.lua")
+    vim.api.nvim_command("source $HOME/.config/nvim/lua/run.lua")
 end
 vim.api.nvim_create_user_command("SourceUtils", source_utils, {})
 
 -- Open terminal with some settings
-vim.api.nvim_create_autocmd('TermOpen', {
-  group = vim.api.nvim_create_augroup('custom-term-open', {clear = true}),
-  callback = function()
-    vim.opt.number = false
-    vim.opt.relativenumber = false
-  end,
+vim.api.nvim_create_autocmd("TermOpen", {
+    group = vim.api.nvim_create_augroup("custom-term-open", { clear = true }),
+    callback = function()
+        vim.opt.number = false
+        vim.opt.relativenumber = false
+    end,
 })
 
 local job_id = 0
 
-vim.keymap.set("n", "<leader>F", function ()
-  vim.cmd.vnew()
-  vim.cmd.term()
-  vim.cmd.wincmd("J")
-  vim.api.nvim_input("i")
-  vim.api.nvim_win_set_height(0, 15)
+vim.keymap.set("n", "<leader>F", function()
+    vim.cmd.vnew()
+    vim.cmd.term()
+    vim.cmd.wincmd("J")
+    vim.api.nvim_input("i")
+    vim.api.nvim_win_set_height(0, 15)
 
-  job_id = vim.bo.channel
+    job_id = vim.bo.channel
 end)
 
-vim.keymap.set("n", "<leader>example", function ()
-  vim.fn.chansend(job_id, {"echo 'hi'\r\n"})
+vim.keymap.set("n", "<leader>example", function()
+    vim.fn.chansend(job_id, { "echo 'hi'\r\n" })
 end)
 
 -- Love2d
 local function love2d()
-  vim.cmd("!love ./src", {})
+    vim.cmd("!love ./src", {})
 end
 vim.api.nvim_create_user_command("Love", love2d, {})
 
@@ -121,7 +121,7 @@ function RemoveInlineBlockComment()
     local uncommented = line:gsub("/%*.-%*/", "")
     vim.api.nvim_set_current_line(uncommented)
 end
-vim.keymap.set('n', '<leader>rc', RemoveInlineBlockComment, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>rc", RemoveInlineBlockComment, { noremap = true, silent = true })
 
 -- Run Tests for the current file
 vim.keymap.set("n", "<space>tf", "<cmd>PlenaryBustedFile %<CR>")

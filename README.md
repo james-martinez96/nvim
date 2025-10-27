@@ -10,6 +10,9 @@ Which includes a set of plugins and keymaps.
 
 > May not work on Windows.
 
+## REQUIREMENTS
+treesitter-cli
+
 ## Structure
 
 The project is structured as follows:
