@@ -15,6 +15,7 @@ return {
                 "python",
                 "rust",
                 "tsx",
+                "jsx",
                 "javascript",
                 "typescript",
                 "vimdoc",
@@ -46,8 +47,9 @@ return {
             --     ds = "duckyscript",
             --   },
             -- })
+            local ft_patterns = vim.tbl_extend("force", parsers, { "javascriptreact" })
             vim.api.nvim_create_autocmd("FileType", {
-                pattern = parsers,
+                pattern = ft_patterns,
                 callback = function()
                     -- syntax highlighting, provided by Neovim
                     vim.treesitter.start()
