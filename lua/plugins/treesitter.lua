@@ -26,6 +26,8 @@ return {
                 "gdshader",
                 "c_sharp",
                 "tmux",
+                "yaml",
+                "json",
             }
             local nvim_treesitter = require("nvim-treesitter")
             nvim_treesitter.setup({})
