@@ -30,7 +30,7 @@ require("utils")
 require("session_manager")
 require("run")
 require("float")
-require("texwatch").setup()
+-- require("texwatch").setup()
 require("new-lsp")
 require("lazy").setup({
     spec = {

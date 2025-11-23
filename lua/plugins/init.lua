@@ -1,7 +1,8 @@
 return {
     -- { "christoomey/vim-tmux-navigator" },
     { "windwp/nvim-autopairs", opts = {} },
-    { "j-hui/fidget.nvim", opts = {} },
+    { "j-hui/fidget.nvim",     opts = {} },
+    { "folke/which-key.nvim",  opts = {} },
     -- {
     --   "JoosepAlviste/nvim-ts-context-commentstring",
     --   opts = {
@@ -15,7 +16,6 @@ return {
         -- dependencies = {"JoosepAlviste/nvim-ts-context-commentstring"},
         -- opts = { pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook() },
     },
-    { "folke/which-key.nvim", opts = {} },
     { "mbbill/undotree" },
     { "tpope/vim-fugitive" },
     -- { "tpope/vim-surround" },
@@ -47,7 +47,8 @@ return {
 
     -- Development
     -- { dir = "~/.config/nvim/test_plugin.nvim" },
-
+    -- { dir = "/mnt/usb/nvim_plugins/flipper.nvim" },
+    { "james-martinez96/texwatch.nvim" },
     { -- dir = "/mnt/usb/nvim_plugins/present.nvim",
         { "james-martinez96/present.nvim" },
 
