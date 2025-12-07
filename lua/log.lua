@@ -18,7 +18,8 @@ local function write_log(level, msg)
         file:write(string.format("[%s] [%s] %s\n", time, level, msg))
         file:close()
     else
-        print("Error opening the file: " .. log_file_path)
+        vim.fn.mkdir(log_file_path, "p")
+        -- print("Error opening the file: " .. log_file_path)
     end
 end
 
