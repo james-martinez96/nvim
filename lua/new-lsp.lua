@@ -90,6 +90,7 @@ local lsp_servers = {
             },
         },
     },
+    nginx_language_server = {},
     -- csharp_ls = {},
     -- copilot = {},
 }
