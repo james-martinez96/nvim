@@ -3,6 +3,15 @@ return {
     { "windwp/nvim-autopairs", opts = {} },
     { "j-hui/fidget.nvim",     opts = {} },
     { "folke/which-key.nvim",  opts = {} },
+    {
+      "folke/todo-comments.nvim",
+      dependencies = { "nvim-lua/plenary.nvim" },
+      opts = {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    },
     -- {
     --   "JoosepAlviste/nvim-ts-context-commentstring",
     --   opts = {
