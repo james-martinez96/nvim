@@ -49,7 +49,7 @@ return {
             --     ds = "duckyscript",
             --   },
             -- })
-            local ft_patterns = vim.tbl_extend("force", parsers, { "javascriptreact" })
+            local ft_patterns = vim.tbl_extend("force", parsers, { "javascriptreact", "typescriptreact" })
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = ft_patterns,
                 callback = function()
