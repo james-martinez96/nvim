@@ -93,6 +93,7 @@ local lsp_servers = {
     nginx_language_server = {},
     -- csharp_ls = {},
     -- copilot = {},
+    v_analyzer = {}
 }
 
 -- Get capabilities from nvim-cmp

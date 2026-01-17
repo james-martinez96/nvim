@@ -1,4 +1,6 @@
 -- TODO: update treesitter to main branch
+-- TODO: add nvim-treesitter-textobjects
+-- TODO: automate tree-sitter-cli installation
 return {
     {
         "nvim-treesitter/nvim-treesitter",
@@ -28,6 +30,7 @@ return {
                 "tmux",
                 "yaml",
                 "json",
+                "v",
             }
             local nvim_treesitter = require("nvim-treesitter")
             nvim_treesitter.setup({})
@@ -58,7 +61,10 @@ return {
                     -- folds, provided by Neovim
                     vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
                     -- indentation, provided by nvim-treesitter
-                    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    -- vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    if vim.bo.filetype ~= "v" then -- vlang does not use ;
+                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    end
                 end,
             })
         end,
