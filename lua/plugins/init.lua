@@ -1,16 +1,30 @@
 return {
     -- { "christoomey/vim-tmux-navigator" },
     { "windwp/nvim-autopairs", opts = {} },
-    { "j-hui/fidget.nvim",     opts = {} },
-    { "folke/which-key.nvim",  opts = {} },
     {
-      "folke/todo-comments.nvim",
-      dependencies = { "nvim-lua/plenary.nvim" },
-      opts = {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
+        "j-hui/fidget.nvim",
+        event = "LspAttach",
+        opts = {
+            progress = {
+                suppress_on_insert = true, -- don't show messages while typing
+                ignore_done_already = true,
+            },
+            notification = {
+                window = {
+                    winblend = 0, -- transparency
+                },
+            },
+        },
+    },
+    { "folke/which-key.nvim", opts = {} },
+    {
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        },
     },
     -- {
     --   "JoosepAlviste/nvim-ts-context-commentstring",
