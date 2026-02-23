@@ -9,7 +9,7 @@ local lsp_servers = {
     --   filetypes = {"duckyscript"},
     --   root_dir = vim.fn.getcwd(),
     -- },
-    -- stylua = {}, -- need to setup
+    stylua = {}, -- need to setup
     bashls = {},
     -- jdtls = {},
     gdscript = {},
@@ -46,9 +46,10 @@ local lsp_servers = {
             },
         },
     },
-    kotlin_language_server = {},
-    eslint = {},
-    -- tailwindcss = {},
+    -- kotlin_language_server = {},
+    kotlin_lsp = {},
+    -- eslint = {},
+    tailwindcss = {},
     cssls = {},
     cssmodules_ls = {},
     vimls = {},
@@ -63,7 +64,7 @@ local lsp_servers = {
     asm_lsp = {},
     arduino_language_server = {},
     html = {
-        filetypes = { "html", "javascriptreact", "typescriptreact", "javascript" },
+        -- filetypes = { "html", "javascriptreact", "typescriptreact", "javascript" },
     },
     lua_ls = {
         cmd = { "lua-language-server" },
@@ -93,7 +94,7 @@ local lsp_servers = {
     nginx_language_server = {},
     -- csharp_ls = {},
     -- copilot = {},
-    v_analyzer = {}
+    v_analyzer = {},
 }
 
 -- Get capabilities from nvim-cmp
@@ -206,7 +207,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 lsp.buf.type_definition,
                 vim.tbl_extend("force", opts, { desc = "goto type definition" })
             )
-            vim.keymap.set("n", "<leader>rn", lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "rename" }))
+            vim.keymap.set("n", "<leader>rn", lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "LSP rename" }))
             vim.keymap.set(
                 "n",
                 "gr",

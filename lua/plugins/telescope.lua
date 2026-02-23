@@ -1,3 +1,5 @@
+-- TODO:
+-- rewrite this maybe...
 return {
     "nvim-telescope/telescope.nvim",
     dependencies = {
