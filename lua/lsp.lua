@@ -229,13 +229,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
             vim.keymap.set(
                 "n",
                 "[d",
-                diagnostic.goto_prev,
+                function ()
+                    diagnostic.jump({count=-1, float=true})
+                end,
                 vim.tbl_extend("force", opts, { desc = "Move to prev diagnostic" })
             )
             vim.keymap.set(
                 "n",
                 "]d",
-                diagnostic.goto_next,
+
+                function ()
+                    diagnostic.jump({count=1, float=true})
+                end,
                 vim.tbl_extend("force", opts, { desc = "Move to next diagnostic" })
             )
             -- vim.keymap.set( "n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
