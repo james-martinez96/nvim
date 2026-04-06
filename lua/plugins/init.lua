@@ -72,6 +72,7 @@ return {
     -- { dir = "~/.config/nvim/test_plugin.nvim" },
     -- { dir = "/mnt/usb/nvim_plugins/flipper.nvim" },
     { "james-martinez96/texwatch.nvim" },
+    { "james-martinez96/choom.nvim" },
     { -- dir = "/mnt/usb/nvim_plugins/present.nvim",
         { "james-martinez96/present.nvim" },
 
