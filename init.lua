@@ -26,6 +26,7 @@ local opts = {}
 
 require("header")
 require("keymaps")
+-- require("mouse")
 require("options")
 require("utils")
 require("session_manager")
