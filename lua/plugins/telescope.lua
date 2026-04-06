@@ -26,8 +26,8 @@ return {
                 },
             },
             file_ignore_patterns = {
-                ".png",
-                ".jpeg",
+                -- "%.png$",
+                -- "%.jpg$",
                 "^node_modules/",
             },
         },
@@ -52,8 +52,20 @@ return {
 
         vim.keymap.set("n", "<leader>s/", telescope_live_grep_open_files, { desc = "[S]earch [/] in Open Files" })
         vim.keymap.set("n", "<leader><space>", builtin.buffers, { desc = "[ ] Find existing buffers" })
-        vim.keymap.set("n", "<leader>?", builtin.oldfiles, { desc = "[?] Find recently opoend file" })
-        vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
+        vim.keymap.set("n", "<leader>?", builtin.oldfiles, { desc = "[?] Find recently opened file" })
+        -- vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
+        vim.keymap.set("n", "<leader>sf", function()
+            builtin.find_files({
+                find_command = {
+                    "rg", "--files",
+                    "--glob", "!*.png",
+                    "--glob", "!*.jpeg",
+                    "--glob", "!*.jpg",
+                    "--glob", "!*.gd.uid",
+                    "--glob", "!node_modules/",
+                },
+            })
+        end, { desc = "[S]earch [F]iles" })
         vim.keymap.set("n", "<leader>/sf", function()
             require("telescope.builtin").find_files({
                 find_command = { "rg", "--files", "--no-ignore", "--hidden" },
