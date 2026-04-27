@@ -1,3 +1,4 @@
+-- TODO: move lsp servers to their own .lua files
 local diagnostic = require("vim.diagnostic")
 local lsp = require("vim.lsp")
 
@@ -17,7 +18,10 @@ local lsp_servers = {
     -- cpptools = {},
     rust_analyzer = {},
     jedi_language_server = {},
-    pyright = {},
+    pyright = {
+        -- cmd = { "pyright-langserver", "--stdio" },
+        -- filetypes = { "python" }
+    },
     ts_ls = {
         -- Note: typescript-tools.nvim will handle TypeScript if you're using it
         -- You might want to disable this if using typescript-tools
@@ -64,7 +68,7 @@ local lsp_servers = {
     asm_lsp = {},
     arduino_language_server = {},
     html = {
-        -- filetypes = { "html", "javascriptreact", "typescriptreact", "javascript" },
+        filetypes = { "html", "javascriptreact", "typescriptreact", "javascript" },
     },
     lua_ls = {
         cmd = { "lua-language-server" },
@@ -107,7 +111,7 @@ end
 for name, config in pairs(lsp_servers) do
     config.capabilities = capabilities
     lsp.config(name, config)
-    -- vim.print(name, cfg)
+    -- vim.print(name, config)
 end
 lsp.enable(vim.tbl_keys(lsp_servers))
 
@@ -255,93 +259,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 vim.lsp.buf.format()
             end, {})
         end
-
-        -- Enable auto-completion. Note: Use CTRL-Y to select an item. |complete_CTRL-Y|
-        -- if client:supports_method('textDocument/completion') then
-        -- Optional: trigger autocompletion on EVERY keypress. May be slow!
-        -- local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
-        -- client.server_capabilities.completionProvider.triggerCharacters = chars
-
-        -- vim.lsp.completion.enable(true, client.id, args.buf, {autotrigger = true})
-
-        -- local cmp = require("cmp")
-        -- local luasnip = require("luasnip")
-        -- require("luasnip.loaders.from_vscode").lazy_load()
-        -- -- cmp.setup.cmdline(':', {
-        -- --   mapping = cmp.mapping.preset.cmdline(),
-        -- --   sources = cmp.config.sources({
-        -- --     {name='path'},
-        -- --   })
-        -- -- })
-        -- luasnip.config.setup({})
-        -- cmp.setup({
-        --   snippet = {
-        --     expand = function(args)
-        --       luasnip.lsp_expand(args.body)
-        --     end,
-        --   },
-        --   completion = {
-        --     completeopt = "menu,menuone,noinsert",
-        --   },
-        --   mapping = cmp.mapping.preset.insert({
-        --     ["<C-p>"] = cmp.mapping.select_prev_item(),
-        --     ["<C-n>"] = cmp.mapping.select_next_item(),
-        --     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-        --     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        --     ["<C-Space>"] = cmp.mapping.complete(),
-        --     ["<C-e>"] = cmp.mapping.close(),
-        --     ["<CR>"] = cmp.mapping.confirm({
-        --       behavior = cmp.ConfirmBehavior.Replace,
-        --       select = true,
-        --     }),
-        --     ["<Tab>"] = cmp.mapping(function(fallback)
-        --       if cmp.visible() then
-        --         cmp.select_next_item()
-        --       elseif luasnip.expand_or_locally_jumpable() then
-        --         luasnip.expand_or_jump()
-        --       else
-        --         fallback()
-        --       end
-        --     end, { "i", "s" }),
-        --     ["<S-Tab>"] = cmp.mapping(function(fallback)
-        --       if cmp.visible() then
-        --         cmp.select_prev_item()
-        --       elseif luasnip.locally_jumpable(-1) then
-        --         luasnip.jump(-1)
-        --       else
-        --         fallback()
-        --       end
-        --     end, { "i", "s" }),
-        --   }),
-        --   -- the order of sources matter (by default). That gives the priority
-        --   -- you can confugure:
-        --   --    keyword_length
-        --   --    priority
-        --   --    max_item_count
-        --   --    (more)
-        --   sources = {
-        --     { name = "nvim_lsp" },
-        --     { name = "luasnip" },
-        --     { name = "buffer" },
-        --     { name = "path"},
-        --     -- { name = "nvim_lua" },
-        --     -- { name = "copilot" },
-        --   },
-        -- })
-
-        -- end
-
-        -- Auto-format ("lint") on save.
-        -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
-        -- if not client:supports_method('textDocument/willSaveWaitUntil')
-        --     and client:supports_method('textDocument/formatting') then
-        --   vim.api.nvim_create_autocmd('BufWritePre', {
-        --     group = vim.api.nvim_create_augroup('my.lsp', {clear=false}),
-        --     buffer = args.buf,
-        --     callback = function()
-        --       vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
-        --     end,
-        --   })
-        -- end
     end,
 })
