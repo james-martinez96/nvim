@@ -1,0 +1,19 @@
+{
+  "Lua Module Template": {
+    "prefix": "mod",
+    "body": [
+      "local M = {}",
+      "",
+      "function M.${1:function_name}()",
+      "\t$0",
+      "end",
+      "",
+      "return M"
+    ],
+    "description": "Create a new Lua module template",
+    "luasnip": {
+      "priority": 2000,
+      "wordTrig": true
+    }
+  }
+}
