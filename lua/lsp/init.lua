@@ -3,7 +3,14 @@ local diagnostic = require("vim.diagnostic")
 local lsp = require("vim.lsp")
 
 -- Default configs for these are being set by "williamboman/mason.nvim"
+-- TODO: upload lsp or something
 local lsp_servers = {
+    -- LSP for Commodore64 and vice
+    -- c64_lsp = {
+    --     cmd = {"python", "/mnt/usb/C64 lsp/c64_lsp.py"},
+    --     filetypes = {"c64asm"},
+    --     root_dir = vim.fn.getcwd(),
+    -- },
     -- LSP for duckyscript
     -- ducky = {
     --   cmd = {"python", "/mnt/usb/flipper/duckyscript/ducky_lsp.py"},
