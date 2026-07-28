@@ -221,6 +221,8 @@ end
 
 -- Safely wrap the user command
 -- Example: Vice d .start
+-- must be enable in vice Settings
+-- Setting -> Host -> Monitor -> Enable remote monitor
 vim.api.nvim_create_user_command("Vice", function(opts)
     local cmd = (opts.args and opts.args ~= "") and opts.args or "r"
     send_to_vice(cmd)
