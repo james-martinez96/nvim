@@ -109,11 +109,12 @@ vim.keymap.set("n", "<leader>example", function()
     vim.fn.chansend(job_id, { "echo 'hi'\r\n" })
 end)
 
--- Love2d
-local function love2d()
-    vim.cmd("!love ./src", {})
+local fterm = require("float")
+local function run_love2d()
+    -- Execute Love2D, then hand control back to interactive shell
+    fterm.toggle_terminal("love ./src ; $SHELL")
 end
-vim.api.nvim_create_user_command("Love", love2d, {})
+vim.api.nvim_create_user_command("Love", run_love2d, {})
 
 -- This leaves trailing whitespace
 function RemoveInlineBlockComment()
