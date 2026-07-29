@@ -17,11 +17,15 @@ local lsp_servers = {
     --   filetypes = {"duckyscript"},
     --   root_dir = vim.fn.getcwd(),
     -- },
-    stylua = {}, -- need to setup
     bashls = {},
     -- jdtls = {},
     gdscript = {},
-    clangd = {},
+    clangd = {
+        on_attach = function(client, bufnr)
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+        end,
+    },
     -- cpptools = {},
     rust_analyzer = {},
     jedi_language_server = {},
@@ -66,16 +70,17 @@ local lsp_servers = {
     vimls = {},
     texlab = {},
     ltex_plus = {
+        filetypes = { "tex", "gitcommit" },
         settings = {
             ltex = {
                 language = "en-AU",
             },
         },
     },
-    asm_lsp = {},
+    -- asm_lsp = {},
     arduino_language_server = {},
     html = {
-        filetypes = { "html", "javascriptreact", "typescriptreact", "javascript" },
+        filetypes = { "html" },
     },
     lua_ls = {
         cmd = { "lua-language-server" },
@@ -92,7 +97,7 @@ local lsp_servers = {
                     checkThirdParty = false,
                     library = {
                         "${3rd}/luv/library",
-                        unpack(vim.api.nvim_get_runtime_file("", true)),
+                        unpack(vim.api.nvim_get_runtime_file("lua", true)),
                     },
                 },
                 completion = {
@@ -237,34 +242,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 diagnostic.open_float,
                 vim.tbl_extend("force", opts, { desc = "show diagnostics" })
             )
-            vim.keymap.set(
-                "n",
-                "[d",
-                function ()
-                    diagnostic.jump({count=-1, float=true})
-                end,
-                vim.tbl_extend("force", opts, { desc = "Move to prev diagnostic" })
-            )
-            vim.keymap.set(
-                "n",
-                "]d",
-
-                function ()
-                    diagnostic.jump({count=1, float=true})
-                end,
-                vim.tbl_extend("force", opts, { desc = "Move to next diagnostic" })
-            )
-            -- vim.keymap.set( "n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+            vim.keymap.set("n", "[d", function()
+                diagnostic.jump({ count = -1, float = true })
+            end, vim.tbl_extend("force", opts, { desc = "Move to prev diagnostic" }))
+            vim.keymap.set("n", "]d", function()
+                diagnostic.jump({ count = 1, float = true })
+            end, vim.tbl_extend("force", opts, { desc = "Move to next diagnostic" }))
             vim.keymap.set(
                 "n",
                 "<leader>so",
                 require("telescope.builtin").lsp_document_symbols,
                 { desc = "document symbols" }
             )
-            -- vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format()' ]])
-            vim.api.nvim_create_user_command("Format", function()
-                vim.lsp.buf.format()
-            end, {})
         end
     end,
 })
