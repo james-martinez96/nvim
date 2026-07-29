@@ -70,7 +70,7 @@ return {
             -- Keymaps
             vim.keymap.set({ "n", "v" }, "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "AI Chat Toggle" })
             vim.keymap.set({ "n", "v" }, "<leader>ai", "<cmd>CodeCompanion<cr>", { desc = "AI Inline Edit" })
-            vim.keymap.set("v", "<leader>aa", "<cmd>CodeCompanionActions<cr>", { desc = "AI Action Palette" })
+            vim.keymap.set({ "n", "v" }, "<leader>aa", "<cmd>CodeCompanionActions<cr>", { desc = "AI Action Palette" })
         end,
     },
 }
