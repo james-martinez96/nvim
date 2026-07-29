@@ -1,5 +1,4 @@
 return {
-    -- Optional: Better formatting (alternative to built-in LSP formatting)
     {
         "stevearc/conform.nvim",
         event = { "BufWritePre" },
@@ -8,7 +7,7 @@ return {
             {
                 "<leader>fb",
                 function()
-                    require("conform").format({ async = true, lsp_fallback = true })
+                    require("conform").format({ async = true })
                 end,
                 mode = "",
                 desc = "Format Buffer",
@@ -28,11 +27,28 @@ return {
                 html = { "prettier" },
                 css = { "prettier" },
                 scss = { "prettier" },
+                c = { "clang-format" },
+                cpp = { "clang-format" },
             },
-            -- format_on_save = {
-            --   timeout_ms = 500,
-            --   lsp_fallback = true,
-            -- },
+            formatters = {
+                ["clang-format"] = {
+                    prepend_args = { "--style=file" },
+                },
+            },
+            -- format_on_save = function(bufnr)
+            --     local filetype = vim.bo[bufnr].filetype
+            --
+            --     -- Force clang-format to handle C/C++ without LSP interference
+            --     if filetype == "c" or filetype == "cpp" then
+            --         return { timeout_ms = 500, lsp_fallback = "never" }
+            --     end
+            --
+            --     -- Fallback for other languages
+            --     return {
+            --         timeout_ms = 500,
+            --         lsp_fallback = true,
+            --     }
+            -- end,
         },
     },
 }
