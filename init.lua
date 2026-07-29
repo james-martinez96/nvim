@@ -33,6 +33,7 @@ require("session_manager")
 require("run")
 require("float")
 require("lsp")
+require("commodore64")
 require("lazy").setup({
     spec = {
         { import = "plugins" }
