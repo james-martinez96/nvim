@@ -30,7 +30,7 @@ local vice_job_id = nil
 -- end, { desc = "Compile .c64 and run in VICE" })
 
 -- Compile and Run C64 assembly directly in vice with labels
-vim.keymap.set("n", "<leader>r", function()
+vim.keymap.set("n", "<leader>rv", function()
     vim.cmd("write")
 
     local file = vim.fn.expand("%:p")
