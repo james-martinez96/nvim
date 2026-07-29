@@ -52,6 +52,23 @@ return {
             --     ds = "duckyscript",
             --   },
             -- })
+            -- register local c64 asm parser
+            -- local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+            -- parser_config.c64 = {
+            --     install_info = {
+            --         url = "/mnt/usb/C64 lsp/tree-sitter-c64asm",
+            --         files = { "src/parser.c" },
+            --         branch = "main",
+            --     },
+            --     filetype = "c64",
+            -- }
+            -- vim.filetype.add({
+            --     extension = {
+            --         asm = "c64",
+            --         c64 = "c64",
+            --         prg = "c64", -- Optional: if you write code directly in pseudo-source files
+            --     },
+            -- })
             local ft_patterns = vim.tbl_extend("force", parsers, { "javascriptreact", "typescriptreact" })
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = ft_patterns,
