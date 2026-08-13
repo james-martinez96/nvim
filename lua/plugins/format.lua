@@ -29,11 +29,15 @@ return {
                 scss = { "prettier" },
                 c = { "clang-format" },
                 cpp = { "clang-format" },
+                gdscript = {"gdformat"},
             },
             formatters = {
                 ["clang-format"] = {
                     prepend_args = { "--style=file" },
                 },
+                gdformat = {
+                    command = vim.fn.expand("~/.local/share/nvim/mason/packages/gdtoolkit/venv/bin/gdformat"),
+                }
             },
             -- format_on_save = function(bufnr)
             --     local filetype = vim.bo[bufnr].filetype
