@@ -34,6 +34,7 @@ require("run")
 require("float")
 require("lsp")
 require("commodore64")
+require("task")
 require("lazy").setup({
     spec = {
         { import = "plugins" }
