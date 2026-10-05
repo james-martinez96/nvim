@@ -118,6 +118,7 @@ return {
                     { name = "luasnip" },
                     { name = "buffer" },
                     { name = "path" },
+                    -- { name = "codecompanion" },
                     -- { name = "nvim_lua" },
                     -- { name = "copilot" },
                 },
