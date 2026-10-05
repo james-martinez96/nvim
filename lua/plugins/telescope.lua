@@ -10,16 +10,25 @@ return {
                 return vim.fn.executable("make") == 1
             end,
         },
-
-        -- Optional
-        -- "nvim-telescope/telescope-ui-select.nvim",
     },
 
     opts = {
         defaults = {
-            layout_strategy = "vertical",
+            layout_strategy = "flex",
             layout_config = {
-                height = 0.95,
+                flex = {
+                    flip_columns = 150, -- Switches to vertical below 120 columns
+                },
+                horizontal = {
+                    width = 0.90,
+                    height = 0.85,
+                    preview_width = 0.55,
+                },
+                vertical = {
+                    width = 0.95,
+                    height = 0.95,
+                    preview_height = 0.5,
+                },
             },
 
             mappings = {
@@ -33,21 +42,29 @@ return {
                 "^node_modules/",
             },
         },
-
-        -- extensions = {
-        --     ["ui-select"] = {
-        --         require("telescope.themes").get_dropdown(),
-        --     },
-        -- },
     },
 
     config = function(_, opts)
         local telescope = require("telescope")
+        local action_state = require("telescope.actions.state")
 
         telescope.setup(opts)
 
+        -- Force Telescope to recalculate layout live during real-time tmux pane resizing
+        vim.api.nvim_create_autocmd("VimResized", {
+            group = vim.api.nvim_create_augroup("TelescopeRealtimeResize", { clear = true }),
+            callback = function()
+                local current_buf = vim.api.nvim_get_current_buf()
+                if vim.bo[current_buf].filetype == "TelescopePrompt" then
+                    local picker = action_state.get_current_picker(current_buf)
+                    if picker then
+                        picker:full_layout_update()
+                    end
+                end
+            end,
+        })
+
         pcall(telescope.load_extension, "fzf")
-        pcall(telescope.load_extension, "ui-select")
 
         local builtin = require("telescope.builtin")
 
